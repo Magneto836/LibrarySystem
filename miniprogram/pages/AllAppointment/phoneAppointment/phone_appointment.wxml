@@ -1,0 +1,81 @@
+<view class="container">
+  <!-- 地点卡片循环 -->
+  <view class="location-card" wx:for="{{locations}}" wx:key="name">
+    <!-- 卡片头部 -->
+    <view 
+      class="card-header {{isExpanded[index] ? 'expanded' : ''}}" 
+      bindtap="toggleCard" 
+      data-index="{{index}}"
+    >
+      <text class="location-name">{{item.name}}</text>
+      <image 
+        class="arrow-icon" 
+        src="/images/icons/arrow-down.png" 
+        mode="aspectFit"
+      ></image>
+    </view>
+
+    <!-- 可折叠内容区域 -->
+    <view 
+      class="card-content" 
+      style="height: {{isExpanded[index] ? item.booths.length * 120 + 'rpx' : '0'}};"
+    >
+    <scroll-view 
+    scroll-y 
+    class="scroll-area" 
+    style="height: 100%;"
+  >
+    <view class="booth-grid">
+      <!-- 电话亭按钮 -->
+      <view 
+        class="booth-btn {{booth.status === 'available' ? 'available' : 'booked'}}" 
+        wx:for="{{item.booths}}" 
+        wx:for-item="booth"
+        wx:key="boothId"
+        bindtap="bookBooth" 
+        data-location="{{item.name}}" 
+        data-booth="{{booth.boothId}}"
+        data-_id="{{booth._id}}"
+      >
+      
+        <image class="booth-icon" src="/images/icons/phone_booth.png"></image>
+        <text class="booth-number">{{booth.boothId}}号亭</text>
+        <text class="status-text">{{booth.status === 'available' ? '可预约' : '使用中'}}</text>
+      </view>
+      </view>
+    </scroll-view>
+    </view>
+  </view>
+</view>
+
+<view wx:if="{{isModalVisible}}" class="modal-container">
+  <view class="modal-content">
+    <!-- 日期选择器 -->
+    <picker 
+      mode="selector" 
+      range="{{dateOptions}}" 
+      value="{{dateIndex}}" 
+      bindchange="selectDate"
+    >
+      <view>选择日期：{{selectedDate || '请选择日期'}}</view>
+    </picker>
+
+    <!-- 时间段选择器 -->
+    <picker 
+      mode="selector" 
+      range="{{timeSlots}}" 
+      bindchange="selectTimeSlot"
+    >
+      <view>选择时间段：{{selectedTimeSlot || '请选择时间段'}}</view>
+    </picker>
+    
+    <!-- 加载指示器 -->
+    <view wx:if="{{isSubmitting}}" class="loading-indicator">正在处理...</view>
+    
+    <!-- 按钮组 -->
+    <view class="button-group" wx:if="{{!isSubmitting}}">
+      <button class="confirm-btn" bindtap="confirmBooking" disabled="{{isSubmitting}}">确定</button>
+      <button class="cancel-btn" bindtap="cancelBooking" disabled="{{isSubmitting}}">取消</button>
+    </view>
+  </view>
+</view>

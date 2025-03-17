@@ -1,0 +1,63 @@
+<view class="container">
+  <!-- 楼层导航 -->
+  <scroll-view scroll-x class="floor-nav">
+    <block wx:for="{{floors}}" wx:key="floor">
+      <view 
+        class="nav-item {{activeFloor === index ? 'active' : ''}}"
+        bindtap="switchFloor"
+        data-index="{{index}}"
+      >
+        {{item.floor}}楼
+      </view>
+    </block>
+  </scroll-view>
+
+  <!-- 区域折叠面板 -->
+  <view class="area-list">
+    <block wx:for="{{floors[activeFloor].areas}}" wx:key="areaName">
+      <view class="area-card">
+        <!-- 区域头部 -->
+        <view 
+          class="area-header {{areaExpanded[index] ? 'expanded' : ''}}"
+          bindtap="toggleArea"
+          data-floor="{{activeFloor}}"
+          data-area="{{index}}"
+        >
+          <text class="area-name">{{item.areaName}}区</text>
+          <view class="status-indicator">
+            <text class="available-count">{{item.availableSeats}}/{{item.totalSeats}} 可用</text>
+            <image 
+              class="arrow-icon"
+              src="/images/icons/arrow-down.png"
+              mode="aspectFit"
+            ></image>
+          </view>
+        </view>
+
+        <!-- 座位滚动容器 -->
+        <scroll-view 
+          class="seat-scroll" 
+          scroll-y 
+          style="height: {{areaExpanded[index] ? '500rpx' : '0'}};"
+        >
+          <view class="seat-grid">
+            <block wx:for="{{item.seats}}" wx:key="seatId">
+              <view 
+                class="seat-item {{item.status === 'available' ? 'available' : 'occupied'}}"
+                bindtap="bookSeat"
+                data-seatid="{{item.seatId}}"
+                data-status="{{item.status}}"
+              >
+                <image 
+                  class="seat-icon"
+                  src="{{item.status === 'available' ? '/images/icons/seat_available.png' : '/images/icons/seat_occupied.png'}}"
+                ></image>
+                <text class="seat-id">{{item.seatId}}</text>
+              </view>
+            </block>
+          </view>
+        </scroll-view>
+      </view>
+    </block>
+  </view>
+</view>

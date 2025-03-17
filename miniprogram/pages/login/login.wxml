@@ -1,0 +1,23 @@
+<!-- 添加专属class到按钮 -->
+<button 
+  class="custom-avatar-btn" 
+  open-type="chooseAvatar" 
+  bind:chooseavatar="handleChooseAvatar"
+>
+  <image class="avatar" src="{{avatarUrl|| '/images/default-avatar.png'}}"></image>
+</button>
+<view class="tip-text">点击头像修改资料照片</view>
+<!-- 单独处理昵称输入框 -->
+<input 
+  type="nickname" 
+  class="weui-input" 
+  placeholder="请输入昵称"
+  value="{{nickname}}" 
+  bind:change="onNicknameChange" 
+/>
+
+<!-- 提交按钮 -->
+<button 
+  class="submit-btn" 
+  bindtap="handleSubmit"
+> 立即登录 </button>

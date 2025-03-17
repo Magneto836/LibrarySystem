@@ -1,0 +1,44 @@
+<!--pages/home/home.wxml-->
+<image src = "/images/default_index_bg.jpg" class = "image"></image>
+
+
+
+<view class="set">
+  <view class="top">
+    
+    <view class="label">您还没有选需要的资源哦</view>
+    <view class="seat flex">
+      <view class="left">
+        <view class="tip">请去挑选座位/讨论区/电话亭吧</view>
+      </view>
+      <view class="right">
+        <view class="btn" bindtap="onChooseBtnTap">去选择</view>
+      </view>
+    </view>
+  </view>
+</view>
+
+<!-- WXML -->
+<view class="resource-situation">
+  <view class="header">
+    <text class="title">当前资源预约情况</text>
+    <button 
+      class="refresh-btn" 
+      bindtap="refreshResourceStatus"
+      style="width: 240rpx; height: 35px;"
+    >
+      刷新
+    </button>
+  </view>
+  <view class="resource-list">
+    <view 
+      class="resource-item" 
+      wx:for="{{resourceStatusList}}" 
+      wx:key="type"
+    >
+      <text class="resource-type">{{item.type}}</text>
+      <text class="resource-status">{{item.occupied_count}} / {{item.totalCount}}</text>
+    </view>
+  </view>
+</view>
+

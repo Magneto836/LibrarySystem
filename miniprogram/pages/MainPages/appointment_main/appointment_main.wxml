@@ -1,0 +1,30 @@
+
+<view class="guide-container">
+  <view class="guide-text">使用指南</view>
+  <view class="guide-detail">点击下方图片进行对应资源预约</view> <view class="guide-detail">上拉刷新资源使用情况</view>
+</view>
+
+
+
+
+<view class="card-container" bindtap="navigateToSeatBooking">
+  <view class="card" hover-class="card-hover">
+    <image class="card-bg" src="/assets/source/picture/座椅预约背景图.jpg"></image>
+    <text class="card-text">座位预约</text>
+  </view>
+</view>
+
+<!-- 类似地为其他卡片（电话亭、讨论区）添加相应的代码 -->
+<view class="card-container" bindtap="navigateToPhoneBooking">
+  <view class="card" hover-class="card-hover">
+    <image class="card-bg" src="/assets/source/picture/电话亭预约背景图.jpg"></image>
+    <text class="card-text">电话亭预约</text>
+  </view>
+</view>
+
+<view class="card-container" bindtap="navigateToDisBooking">
+  <view class="card" hover-class="card-hover">
+    <image class="card-bg" src="/assets/source/picture/讨论区预约背景图.jpg"></image>
+    <text class="card-text">讨论区预约</text>
+  </view>
+</view>

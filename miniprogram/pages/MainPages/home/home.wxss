@@ -1,0 +1,145 @@
+/* pages/home/home.wxss */
+.image{
+  height: 500rpx;
+  width: 100%;
+}
+
+
+.set {
+  margin-top: 18px;
+  width: 90%;
+  margin: 0 auto;
+  background: #fff;
+  box-shadow: 2px 2px 18px rgba(0, 0, 0, .05);
+  border-radius: 8px;
+}
+
+.set .top {
+  box-sizing: border-box;
+  height: 119px;
+  padding: 16px 18px;
+  background-image: url(https://6c69-library-0gut28suf23f2870-1342785801.tcb.qcloud.la/homebtnbk.png?sign=852b730ca88775e17db64d74213d030f&t=1740392435); /* 替换为实际的云存储链接 */
+  background-size: 113% 136%;
+  background-repeat: no-repeat;
+  background-position: 50%;
+}
+.set .top .label {
+  font-weight: 700;
+  font-size: 17px;
+  line-height: 21px;
+  color: #333;
+}
+
+.set .top .seat {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+  position: relative;
+}
+.tip{
+  font-size:15px;
+}
+
+.set .top .seat .left {
+  font-size: 14px;
+  line-height: 18px;
+  width: 70%;
+  color: #999;
+}
+
+.set .top .seat .left .tip {
+  margin-bottom: 8px;
+  opacity: .5;
+}
+
+.set .top .seat .right .btn {
+  width: 97px;
+  height: 43px;
+  background: #fef9f3;
+  border-radius: 21px;
+  color: #fe9b4b;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 43px;
+  position: absolute;
+  right: 0;
+  top: -14px;
+  text-align: center;
+}
+
+/* WXSS */
+.resource-situation {
+  width: 90%;
+  margin: 20px auto;
+  background-color: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.title {
+
+  font-size: 24px;
+  font-weight: bold;
+  color: #333333;
+}
+
+.refresh-btn {
+  background-color: #07C160;
+  color: white;
+  font-size: 16px;
+  padding: 8px 20px;
+  border-radius: 4px;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.refresh-btn:active {
+  transform: scale(0.98);
+}
+
+.resource-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.resource-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.resource-type {
+
+  font-size: 18px;
+  color: #666666;
+  margin-right: 10px;
+}
+
+.resource-status {
+
+  font-size: 16px;
+  color: #333333;
+}
+
+
+.progress-container {
+  display: flex;
+  align-items: center;
+  margin-top: 5px;
+}
+
+.resource-status {
+  margin-left: 10px;
+  font-size: 14px;
+  color: #666;
+}

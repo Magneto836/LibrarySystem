@@ -1,0 +1,131 @@
+/* 容器 */
+.container {
+  padding: 20rpx;
+}
+
+/* 楼层导航 */
+.floor-nav {
+  height: 90rpx;
+  white-space: nowrap;
+  background: #f5f5f5;
+  padding: 0 20rpx;
+}
+
+.nav-item {
+  display: inline-block;
+  padding: 0 30rpx;
+  line-height: 90rpx;
+  font-size: 28rpx;
+  color: #666;
+  transition: all 0.3s;
+}
+
+.nav-item.active {
+  color: #2d8cf0;
+  font-weight: bold;
+  border-bottom: 4rpx solid #2d8cf0;
+}
+
+/* 区域卡片 */
+.area-card {
+  margin: 20rpx 0;
+  border-radius: 16rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.08);
+  background: white;
+  overflow: hidden;
+}
+
+.area-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24rpx 32rpx;
+  transition: all 0.3s;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.area-name {
+  font-size: 32rpx;
+  font-weight: 500;
+  color: #333;
+}
+
+.status-indicator {
+  display: flex;
+  align-items: center;
+}
+
+.available-count {
+  font-size: 24rpx;
+  color: #666;
+  margin-right: 16rpx;
+}
+
+.arrow-icon {
+  width: 36rpx;
+  height: 36rpx;
+  transition: transform 0.3s;
+}
+
+.expanded .arrow-icon {
+  transform: rotate(180deg);
+}
+
+/* 座位滚动容器 */
+.seat-scroll {
+  transition: height 0.3s ease;
+  overflow: hidden;
+}
+
+/* 座位网格 */
+.seat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 四列布局 */
+  gap: 24rpx; /* 增大间距 */
+  padding: 20rpx;
+}
+
+.seat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20rpx;
+  border-radius: 12rpx;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.seat-item.available {
+  background: #e8f4ff;
+  border: 2rpx solid #2d8cf0;
+}
+
+.seat-item.occupied {
+  background: #fff3f3;
+  border: 2rpx solid #ff4d4f;
+  opacity: 0.7;
+}
+
+.seat-icon {
+  width: 60rpx; /* 增大图标尺寸 */
+  height: 60rpx;
+  margin-bottom: 8rpx;
+}
+
+.seat-id {
+  font-size: 28rpx;
+  color: #333;
+  font-weight: bold;
+}
+
+/* 活动状态提示 */
+.time-indicator {
+  position: absolute;
+  bottom: 8rpx;
+  right: 8rpx;
+  font-size: 20rpx;
+  color: #ff4d4f;
+  background: rgba(255, 255, 255, 0.8);
+  padding: 4rpx 8rpx;
+  border-radius: 8rpx;
+}

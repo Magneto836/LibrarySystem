@@ -1,0 +1,66 @@
+/* pages/index/index.wxss */
+/* 卡片容器 */
+.card-container {
+  display: inline-block;
+  margin: 10px;
+}
+
+/* 卡片基础样式 */
+.card {
+  width: 640rpx;
+  height: 300rpx;
+  margin-left: 38rpx;
+  border-radius: 15px; /* 圆角设置 */
+  position: relative;
+  overflow: hidden;
+  margin-top:16rpx;
+  transition: transform 0.3s ease; /* 平滑过渡效果 */
+}
+
+/* 悬停时的放大效果 */
+.card-hover {
+  transform: scale(1.05); /* 放大比例 */
+}
+
+/* 背景图片样式 */
+.card-bg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* 确保图片覆盖整个卡片 */
+}
+
+/* 文本样式 */
+.card-text {
+  position: absolute;
+  bottom: 8px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  color: white;
+  font-size: 18px;
+  background-color: rgba(0, 0, 0, 0.5); /* 半透明背景色 */
+  padding: 5px;
+}
+
+/* 使用指南容器 */
+.guide-container {
+  text-align: center; /* 文本居中对齐 */
+  margin-bottom: 30px; /* 下边距，与卡片之间保持一定距离 */
+}
+.guide-container {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.guide-text {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px; /* 控制上下间距 */
+}
+
+.guide-detail {
+  font-size: 16px;
+  color: #666;
+}
+
