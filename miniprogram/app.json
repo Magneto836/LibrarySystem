@@ -5,7 +5,8 @@
     "pages/MainPages/appointment_main/appointment_main",
     "pages/index/index",
     "pages/AllAppointment/phoneAppointment/phone_appointment",
-    "pages/AllAppointment/seatAppointment/seat_appointment"
+    "pages/AllAppointment/seatAppointment/seat_appointment",
+    "pages/AllAppointment/disArea_appointment/disArea_appointment"
   ],
   "window": {
     "backgroundColor": "#F6F6F6",

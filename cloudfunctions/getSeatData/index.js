@@ -57,7 +57,6 @@ exports.main = async (event, context) => {
         areaName: area.areaName,
         totalSeats: area.totalSeats,
         availableSeats: area.availableSeats,
-        // 可选：保留原始座位数据供前端使用
         seats: area.seats
       }))
     }));

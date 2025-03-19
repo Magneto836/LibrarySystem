@@ -7,7 +7,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    isExpanded: [false, false, false],
+    isExpanded: [],    // 如果有新区域
     locations:[],
     dateIndex: 0,
     isSubmitting:false,
@@ -17,7 +17,6 @@ Page({
   activeTime: null,
   selectedTimeSlot:'',
     selectedDate: '', // 选中的日期
-    selectedTime: '', // 选中的时间
     isModalVisible: false, // 控制模态框的显示
     currentId:'',//_id 
     refreshTime:null  //定时器ID
@@ -38,13 +37,12 @@ Page({
     this.setData({ timeSlots: this.generateTimeSlots(currentTime) });
 
     this.fetchPhoneDataFromCloud();
-    const today = new Date().toISOString().split('T')[0];
-    const tomorrow = new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+    const [today, tomorrow] = this.getDates();
   
     this.setData({
       today,
       tomorrow,
-      dateOptions: [today, tomorrow] // 日期选项
+      dateOptions: this.getDates() // 日期选项
     });
   },
 
@@ -109,7 +107,12 @@ Page({
       currentId:_id
     });
   },
-
+// 在 Page 函数内部添加公共方法
+getDates() {
+  const today = new Date().toISOString().split('T')[0];
+  const tomorrow = new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+  return [today, tomorrow];
+},
 
 
   selectTimeSlot(e) {
@@ -122,7 +125,7 @@ Page({
     const index = e.detail.value;
   const selectedDate = this.data.dateOptions[index];
   const isToday = selectedDate === this.data.today;
-  console.log("源isToday",isToday);
+
   this.setData({ 
     selectedDate,
     timeSlots: this.generateTimeSlots(
@@ -137,7 +140,12 @@ Page({
   generateTimeSlots(currentTime,isToday) {
 
       const slots = [];
+      let currentTotalMinutes = 0;
 
+      if (isToday) {
+        const [currentHour, currentMinute] = currentTime.split(':').map(Number);
+        currentTotalMinutes = currentHour * 60 + currentMinute;
+      }
       for (let hour = 9; hour < 19; hour++) {
         for (let minute = 0; minute < 60; minute += 30) {
   
@@ -159,11 +167,8 @@ Page({
     
           // 将时间段添加到slots数组中
           if (isToday) {
-            const [currentHour, currentMinute] = currentTime.split(':').map(Number);
-            const currentTotalMinutes = currentHour * 60 + currentMinute;
             const slotStartTotalMinutes = hour * 60 + minute;
-    
-            if (slotStartTotalMinutes >= currentTotalMinutes-30) {
+            if (slotStartTotalMinutes >= currentTotalMinutes - 30) {
               slots.push(`${startTime}——${endTime}`);
             }
           } else {
@@ -251,21 +256,29 @@ Page({
 
   toggleCard(e) {
     const index = e.currentTarget.dataset.index;
-    const newExpanded = this.data.isExpanded.map((state, i) => 
-      i === index ? !state : state
-    )
-    this.setData({ isExpanded: newExpanded })
+    const newExpanded = [...this.data.isExpanded]; // 复制当前展开状态数组
+  
+    // 1. 切换当前卡片的状态（展开/收起）
+    newExpanded[index] = !newExpanded[index];
+  
+    // 2. 如果当前卡片被设为展开（true），则关闭其他所有卡片
+    if (newExpanded[index]) {
+      newExpanded.fill(false); // 其他卡片全部设为 false
+      newExpanded[index] = true; // 仅当前卡片设为 true
+    }
+  
+    this.setData({ isExpanded: newExpanded });
   },
   async fetchPhoneDataFromCloud() {
     try {
-      console.log("开始调用");
+
       const result = await wx.cloud.callFunction({ name: 'getPhoneData' });
       if(result.result&&result.result.error){
         throw new Error(result.result.error);
       }
       if (result.result && !result.result.error) {
         const { phoneData } = result.result;
-        console.log("原始数据是",result.result);
+
 
         const groupedData = phoneData.reduce((acc, current) => {
           const locationName = current.location;
@@ -288,10 +301,11 @@ Page({
         }
         return acc;
       }, []);
+      const newIsExpanded = Array(groupedData.length).fill(false);
 
-      console.log("转换后的数据:", groupedData);
         this.setData({
-          locations:groupedData
+          locations:groupedData,
+          isExpanded: newIsExpanded
         });
 
     }} catch (error) {
@@ -299,10 +313,12 @@ Page({
     }
   },
   startAutoRefresh(){
-    this.data.refreshTimer = setInterval(() => {
-      this.fetchPhoneDataFromCloud();
-      console.log('自动刷新数据', new Date().toLocaleString());
-    }, 3 * 60 * 1000); // 3分钟间隔
+    if (!this.data.refreshTimer) { // 防止重复设置定时器
+      this.data.refreshTimer = setInterval(() => {
+        this.fetchPhoneDataFromCloud();
+
+      }, 3 * 60 * 1000); // 3分钟间隔
+    }
   },
   clearAutoRefresh() {
     if (this.data.refreshTimer) {

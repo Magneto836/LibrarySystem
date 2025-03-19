@@ -1,4 +1,11 @@
 <view class="container">
+<!-- 加载提示框 -->
+<view wx:if="{{isLoading}}" class="loading-overlay">
+    <view class="loading-spinner">
+      <view class="spinner"></view>
+      <text class="loading-text">正在加载...</text>
+    </view>
+  </view>
   <!-- 楼层导航 -->
   <scroll-view scroll-x class="floor-nav">
     <block wx:for="{{floors}}" wx:key="floor">
@@ -47,10 +54,12 @@
                 bindtap="bookSeat"
                 data-seatid="{{item.seatId}}"
                 data-status="{{item.status}}"
+                data-id="{{item._id}}"
               >
+              <view class="seat-background {{item.status === 'available' ? 'available-bg' : 'occupied-bg'}}"></view>
                 <image 
                   class="seat-icon"
-                  src="{{item.status === 'available' ? '/images/icons/seat_available.png' : '/images/icons/seat_occupied.png'}}"
+                  src="/images/icons/seat_available.png"
                 ></image>
                 <text class="seat-id">{{item.seatId}}</text>
               </view>
@@ -59,5 +68,44 @@
         </scroll-view>
       </view>
     </block>
+  </view>
+
+  <!-- 预约模态框 -->
+  <view wx:if="{{isModalVisible}}" class="modal-container">
+    <view class="modal-content">
+      <!-- 日期选择器 -->
+      <picker 
+        mode="selector" 
+        range="{{dateOptions}}" 
+        value="{{dateIndex}}" 
+        bindchange="selectDate"
+      >
+        <view class="picker-container">
+          <text class="picker-label">选择日期：</text>
+          <view class="picker-value">{{selectedDate || '请选择日期'}}</view>
+        </view>
+      </picker>
+
+      <!-- 时间段选择器 -->
+      <picker 
+        mode="selector" 
+        range="{{timeSlots}}" 
+        bindchange="selectTimeSlot"
+      >
+        <view class="picker-container">
+          <text class="picker-label">选择时间段：</text>
+          <view class="picker-value">{{selectedTimeSlot || '请选择时间段'}}</view>
+        </view>
+      </picker>
+      
+      <!-- 加载指示器 -->
+      <view wx:if="{{isSubmitting}}" class="loading-indicator">正在处理...</view>
+      
+      <!-- 按钮组 -->
+      <view class="button-group" wx:if="{{!isSubmitting}}">
+        <button class="confirm-btn" bindtap="confirmBooking" disabled="{{isSubmitting}}">确定</button>
+        <button class="cancel-btn" bindtap="cancelBooking" disabled="{{isSubmitting}}">取消</button>
+      </view>
+    </view>
   </view>
 </view>

@@ -11,6 +11,12 @@ Page({
     wx.navigateTo({
       url: '/pages/AllAppointment/phoneAppointment/phone_appointment',
     });
+   
+  },
+  navigateToDisBooking() {
+    wx.navigateTo({
+      url: '/pages/AllAppointment/disArea_appointment/disArea_appointment',
+    });
   },
   /**
    * 页面的初始数据
