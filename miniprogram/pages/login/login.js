@@ -44,7 +44,9 @@ Page({
           nickname
         }
       });
-
+      const openid = result.result.openid;
+      wx.setStorageSync('userId', openid); // 存储到本地存储
+      getApp().globalData.userId = openid; // 存储到全局变量
       wx.hideLoading();
       wx.reLaunch({ url: '/pages/MainPages/home/home' });
     } catch (error) {

@@ -1,24 +1,97 @@
-/* 按钮容器样式 */
-.custom-avatar-btn {
-  padding: 0 !important; /* 清除默认内边距 */
-  width: 150px !important;
-  height: 150px !important;
-  line-height: normal !important; /* 清除行高影响 */
-  background: transparent !important; /* 去除默认背景 */
-  border: none !important; /* 去除边框 */
-  border-radius: 50%; /* 圆形按钮 */
+/* login.wxss */
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; 
+  padding: 60rpx 40rpx;
+  min-height: 100vh;
+  background: linear-gradient(150deg, #f8f9fa 0%, #e9ecef 100%);
 }
 
-/* 头像图片样式 */
-.custom-avatar-btn .avatar {
+/* 头像区域 */
+.custom-avatar-btn {
+  padding: 0 !important;
+  width: 240rpx !important;
+  height: 240rpx !important;
+  background: linear-gradient(45deg, #84fab0 0%, #8fd3f4 100%) !important;
+  border: none !important;
+  border-radius: 50%;
+  box-shadow: 0 15rpx 30rpx rgba(0,0,0,0.12);
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.custom-avatar-btn:active {
+  transform: scale(0.96);
+}
+
+.avatar {
   width: 100% !important;
   height: 100% !important;
   border-radius: 50%;
+  border: 4rpx solid white;
 }
 
-/* 昵称输入框单独样式 */
+/* 提示文字 */
+.tip-text {
+  font-size: 28rpx;
+  color: #6c757d;
+  margin: 40rpx 0;
+  letter-spacing: 1rpx;
+  text-shadow: 0 2rpx 4rpx rgba(0,0,0,0.05);
+}
+
+/* 输入框样式 */
 .nickname-input {
-  width: 200rpx;
-  height: 60rpx;
-  margin-top: 20rpx;
+  width: 80%;
+  height: 100rpx;
+  margin: 40rpx 0;
+  padding: 0 40rpx;
+  background: #fff;
+  border: 2rpx solid #dee2e6;
+  border-radius: 50rpx;
+  font-size: 32rpx;
+  color: #495057;
+  box-shadow: 0 5rpx 15rpx rgba(0,0,0,0.06);
+  transition: all 0.3s ease;
+}
+
+.input-placeholder {
+  color: #adb5bd !important;
+}
+
+.nickname-input:focus {
+  border-color: #4dabf7;
+  box-shadow: 0 0 20rpx rgba(77, 171, 247, 0.2);
+}
+
+/* 提交按钮 */
+.submit-btn {
+  width: 70%;
+  height: 100rpx;
+  line-height: 70rpx;
+  background: linear-gradient(135deg, #4dabf7 0%, #69db7c 100%);
+  color: white;
+  border: none;
+  border-radius: 50rpx;
+  font-size: 36rpx;
+  letter-spacing: 4rpx;
+  box-shadow: 0 10rpx 20rpx rgba(77, 171, 247, 0.3);
+  transition: all 0.3s ease;
+}
+
+.submit-btn:active {
+  transform: translateY(4rpx);
+  box-shadow: 0 5rpx 15rpx rgba(77, 171, 247, 0.3);
+}
+
+/* 头像浮动动画 */
+@keyframes avatarFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20rpx); }
+}
+
+.avatar-animation {
+  animation: avatarFloat 3s ease-in-out infinite;
 }

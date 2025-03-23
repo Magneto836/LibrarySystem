@@ -195,29 +195,49 @@ getDates() {
     const dateTimeStr = `${selectedDate}T${startTime}:00`;
     // 创建 Date 对象
     const startDateTime = new Date(dateTimeStr);
-    const endDateTime = new Date(startDateTime.getTime() + 30 * 60 * 1000)
+    const endDateTime = new Date(startDateTime.getTime() + 30 * 60 * 1000);
+    const userId= getApp().globalData.userId || wx.getStorageSync('userId');
+    if (!userId) {
+      wx.showToast({ title: '请先登录', icon: 'none' });
+      return;
+    }
+
+
     try {
       const conflictCheck = await wx.cloud.callFunction({
         name: 'checkBookingConflict', 
         data: {
           resourceId: currentId,
-          endTime: endDateTime.toISOString()
+          resourceType:"phone_booths",
+          userId:userId,
+          endTime: endDateTime.toISOString(),
+
         }
       });
-      console.log("conflictCheck.result",conflictCheck.result);
-      if (conflictCheck.result.hasConflict) {
-        wx.showToast({ title: '该时段已被预约', icon: 'none' });
+      if (conflictCheck.result.error) {
+        wx.showToast({ title: result.result.error, icon: 'none' });
+        return false;
+      }
+  
+      if (conflictCheck.result.status=== 0) {
+        wx.showToast({ title: '您已预约过该资源', icon: 'none' });
         this.setData({ isSubmitting: false });
         return;
       }
+     if(conflictCheck.result.status=== 1){
+      wx.showToast({ title: '该资源已被预约，请选择其他资源', icon: 'none' });
+      this.setData({ isSubmitting: false });
+      return;
+     }
 
       await wx.cloud.callFunction({
         name: 'createAppointment',
         data: {
           resourceType: 'phone_booths',
           resourceId: currentId,
+          userId:userId,
           startTime: startDateTime.toISOString(), // 使用 ISO 格式发送时间
-          duration: 30 // 假设每个预约时段为30分钟，请根据实际情况调整
+          duration: 30 
         }
       });
       await wx.cloud.callFunction({

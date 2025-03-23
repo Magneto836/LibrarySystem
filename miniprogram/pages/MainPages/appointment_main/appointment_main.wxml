@@ -1,7 +1,7 @@
 
 <view class="guide-container">
   <view class="guide-text">使用指南</view>
-  <view class="guide-detail">点击下方图片进行对应资源预约</view> <view class="guide-detail">上拉刷新资源使用情况</view>
+  <view class="guide-detail">点击下方图片进行对应资源预约</view> 
 </view>
 
 

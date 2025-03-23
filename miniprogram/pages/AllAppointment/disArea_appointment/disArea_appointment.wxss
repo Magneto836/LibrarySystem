@@ -51,35 +51,45 @@
 }
 
 .discussion-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  display: flex;
+  flex-direction: column;
   gap: 20rpx;
+
+
   padding-bottom: 40rpx;
 }
 
 /* 讨论区按钮 */
 .discussion-btn {
-  width: 273rpx;
-  height: 160rpx;
-  margin: 20rpx;
-  border-radius: 12rpx;
-  display: inline-flex;
-  flex-direction: column;
+  display: flex;
+
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
+  padding: 29rpx 30rpx;
+
+  border-radius: 12rpx;
   transition: all 0.2s ease;
+  background-color: #f8f9fa;
+  width: 94%; /* 确保按钮充满容器宽度 */
+  margin:0rpx; /* 水平居中 */
+  box-sizing: border-box; /* 包含内边距和边框在内 */
 }
 
-.available {
-  background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+.discussion-btn.available {
   border: 2rpx solid #80c9ff;
   animation: breath 2s infinite ease-in-out;
-  will-change: opacity;
 }
 
-.occupied {
-  background: linear-gradient(135deg, #f5f7fa 0%, #e0e0e0 100%);
+.discussion-btn.occupied {
   opacity: 0.7;
+  border: 2rpx solid #ddd;
+}
+
+.discussion-info-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
 }
 
 .discussion-icon {
@@ -89,27 +99,42 @@
 }
 
 .discussion-number {
-  font-size: 28rpx;
+  font-size: 30rpx;
   color: #2c3e50;
   font-weight: 500;
 }
 
-.status-text {
-  font-size: 24rpx;
-  margin-top: 8rpx;
+.discussion-info-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
 }
 
-.available .status-text {
+.discussion-capacity {
+  font-size: 30rpx;
+  color: #666;
+  margin-bottom: 8rpx;
+}
+
+.status-text {
+  font-size: 27rpx;
+  padding: 8rpx 16rpx;
+  border-radius: 10rpx;
+}
+
+.discussion-btn.available .status-text {
+  background-color: rgba(39, 174, 96, 0.2);
   color: #27ae60;
 }
 
-.occupied .status-text {
+.discussion-btn.occupied .status-text {
+  background-color: rgba(231, 76, 60, 0.2);
   color: #e74c3c;
 }
 
 /* 交互效果 */
 .discussion-btn:active {
-  transform: scale(0.96);
+  transform: scale(0.98);
 }
 
 /* 模态框容器 */

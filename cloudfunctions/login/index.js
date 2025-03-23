@@ -14,32 +14,45 @@ exports.main = async (event, context) => {
   const serverDate = db.serverDate();
 
   try {
-    // 检查用户是否存在
-    const userDoc = await db.collection('users').doc(OPENID).get();
+    // 使用 where 查询代替 doc().get()，避免因文档不存在而抛出错误
+    const queryResult = await db.collection('users')
+      .where({ _id: OPENID })
+      .get();
 
-    if (userDoc.data) {
-      // 更新用户信息
-      await db.collection('users').doc(OPENID).update({
-        data: {
-          nickname,
-          avatarUrl,
-          updateTime: serverDate
-        }
-      });
+    if (queryResult.data.length > 0) {
+      // 用户存在，更新信息
+      await db.collection('users')
+        .doc(OPENID)
+        .update({
+          data: {
+            nickname,
+            avatarUrl,
+            updateTime: serverDate
+          }
+        });
     } else {
-      // 新增用户
-      await db.collection('users').add({
-        data: {
-          _id: OPENID,
-          nickname,
-          avatarUrl,
-          createTime: serverDate,
-          updateTime: serverDate
-        }
-      });
+      // 用户不存在，创建新用户
+      await db.collection('users')
+        .add({
+          data: {
+            _id: OPENID,
+            nickname,
+            avatarUrl,
+            createTime: serverDate,
+            updateTime: serverDate
+          }
+        });
     }
   } catch (error) {
-    throw error;
+    // 区分错误类型：用户不存在的错误 vs 其他错误
+    if (error.message.includes('document.get:fail document does not exist')) {
+      // 此处不会触发，因为已改用 where 查询
+      console.log('用户不存在，已自动处理');
+    } else {
+      // 其他未知错误抛出
+      console.error('云函数执行失败:', error);
+      throw error;
+    }
   }
 
   return {

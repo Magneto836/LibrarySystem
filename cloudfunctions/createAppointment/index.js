@@ -4,7 +4,7 @@ cloud.init();
 const db = cloud.database();
 
 exports.main = async (event, context) => {
-  const { resourceId, startTime, duration, resourceType } = event;
+  const { resourceId, startTime, duration, resourceType, userId } = event;
   const wxContext = cloud.getWXContext();
   
   // 计算结束时间
@@ -21,6 +21,7 @@ exports.main = async (event, context) => {
         startTime: start,
         endTime: end,
         duration,
+        userId,
         createdAt: new Date(),
         updatedAt: new Date()
       }

@@ -139,26 +139,45 @@ Page({
     const startDateTime = new Date(dateTimeStr);
     const endDateTime = new Date(startDateTime.getTime() + 240 * 60 * 1000);
 
+    const userId= getApp().globalData.userId || wx.getStorageSync('userId');
+    if (!userId) {
+      wx.showToast({ title: '请先登录', icon: 'none' });
+      return;
+    }
+
     try {
       const conflictCheck = await wx.cloud.callFunction({
         name: 'checkBookingConflict',
         data: {
           resourceId: currentSeatId,
+          userId:userId,
+          resourceType:"seats",
           endTime: endDateTime.toISOString()
         }
       });
+      
+      if (conflictCheck.result.error) {
+        wx.showToast({ title: result.result.error, icon: 'none' });
+        return false;
+      }
 
-      if (conflictCheck.result.hasConflict) {
-        wx.showToast({ title: '该时段已被预约', icon: 'none' });
+      if (conflictCheck.result.status=== 0) {
+        wx.showToast({ title: '您已预约过该资源', icon: 'none' });
         this.setData({ isSubmitting: false });
         return;
       }
+     if(conflictCheck.result.status=== 1){
+      wx.showToast({ title: '该资源已被预约，请选择其他资源', icon: 'none' });
+      this.setData({ isSubmitting: false });
+      return;
+     }
 
       await wx.cloud.callFunction({
         name: 'createAppointment',
         data: {
           resourceType: 'seats',
           resourceId: currentSeatId,
+          userId:userId,
           startTime: startDateTime.toISOString(),
           duration: 240
         }
