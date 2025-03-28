@@ -7,13 +7,15 @@
     "pages/index/index",
     "pages/AllAppointment/phoneAppointment/phone_appointment",
     "pages/AllAppointment/seatAppointment/seat_appointment",
-    "pages/AllAppointment/disArea_appointment/disArea_appointment"
+    "pages/AllAppointment/disArea_appointment/disArea_appointment",
+    "pages/myAppointment/myAppointment"
+
   ],
   "window": {
     "backgroundColor": "#F6F6F6",
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#F6F6F6",
-    "navigationBarTitleText": "云开发基础",
+    "navigationBarTitleText": "图书馆预约",
     "navigationBarTextStyle": "black"
   },
   "tabBar": {

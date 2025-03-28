@@ -1,5 +1,5 @@
 <!-- login.wxml -->
-<view class="login-container">
+<view class="login-container" style="height: 1235rpx; display: flex; box-sizing: border-box">
   <!-- 头像上传区域 -->
   <button 
     class="custom-avatar-btn avatar-animation" 
@@ -21,5 +21,5 @@
   />
 
   <!-- 提交按钮 -->
-  <button class="submit-btn" bindtap="handleSubmit">立即登录</button>
+  <button class="submit-btn" bindtap="handleSubmit" style="position: relative; left: 0rpx; top: -2rpx">立即登录</button>
 </view>

@@ -125,7 +125,7 @@ Page({
     const startDateTime = new Date(dateTimeStr);
     const endDateTime = new Date(startDateTime.getTime() + 240 * 60 * 1000);
 
-    const userId= getApp().globalData.userId || wx.getStorageSync('userId');
+    const userId= getApp().globalData.userInfo.openid || wx.getStorageSync('userInfo').openid;
     if (!userId) {
       wx.showToast({ title: '请先登录', icon: 'none' });
       return;
@@ -233,10 +233,20 @@ Page({
 
       if (result.result && !result.result.error) {
         const { cards } = result.result;
-        console.log("Cards Data:", cards);
+        const processedCards = cards.map(card => {
+          const usingCount = card.discussionAreas.filter(discussion => discussion.status === 'occupied').length;
+          const freeCount = card.discussionAreas.filter(discussion => discussion.status === 'available').length;
+
+          return {
+            ...card,
+            usingCount,
+            freeCount
+          };
+        });
+
 
         this.setData({
-          cards,
+          cards:processedCards,
           cardsExpanded: Array(cards.length).fill(false) // 初始化所有卡片为收起状态
         });
       }

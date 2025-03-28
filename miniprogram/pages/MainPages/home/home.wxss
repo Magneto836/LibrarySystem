@@ -1,145 +1,267 @@
 /* pages/home/home.wxss */
-.image{
-  height: 500rpx;
+.page-container {
+  min-height: 100vh;
+  background: #f5f6fa;
+}
+
+.header-bg {
   width: 100%;
+  height: 380rpx;
+  position: fixed;
+  top: 0;
+  z-index: 0;
+  filter: brightness(0.95);
 }
 
-
-.set {
-  margin-top: 18px;
-  width: 90%;
-  margin: 0 auto;
-  background: #fff;
-  box-shadow: 2px 2px 18px rgba(0, 0, 0, .05);
-  border-radius: 8px;
-}
-
-.set .top {
-  box-sizing: border-box;
-  height: 119px;
-  padding: 16px 18px;
-  background-image: url(https://6c69-library-0gut28suf23f2870-1342785801.tcb.qcloud.la/homebtnbk.png?sign=852b730ca88775e17db64d74213d030f&t=1740392435); /* 替换为实际的云存储链接 */
-  background-size: 113% 136%;
-  background-repeat: no-repeat;
-  background-position: 50%;
-}
-.set .top .label {
-  font-weight: 700;
-  font-size: 17px;
-  line-height: 21px;
-  color: #333;
-}
-
-.set .top .seat {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 15px;
+.content-wrapper {
   position: relative;
-}
-.tip{
-  font-size:15px;
-}
-
-.set .top .seat .left {
-  font-size: 14px;
-  line-height: 18px;
-  width: 70%;
-  color: #999;
+  z-index: 1;
+  padding: 24rpx;
 }
 
-.set .top .seat .left .tip {
-  margin-bottom: 8px;
-  opacity: .5;
+/* 卡片通用样式 */
+.selection-card,
+.status-card {
+  background: #ffffff;
+  border-radius: 16rpx;
+  box-shadow: 0 8rpx 24rpx rgba(0,0,0,0.04);
+  margin-bottom: 32rpx;
+  padding: 32rpx;
 }
 
-.set .top .seat .right .btn {
-  width: 97px;
-  height: 43px;
-  background: #fef9f3;
-  border-radius: 21px;
-  color: #fe9b4b;
-  font-weight: 700;
-  font-size: 16px;
-  line-height: 43px;
-  position: absolute;
-  right: 0;
-  top: -14px;
-  text-align: center;
+.warning-text {
+  font-size: 34rpx;
+  color: #2d3436;
+  font-weight: 600;
+  margin-bottom: 24rpx;
 }
 
-/* WXSS */
-.resource-situation {
-  width: 90%;
-  margin: 20px auto;
-  background-color: #ffffff;
-  border-radius: 15px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-}
-
-.header {
+.action-panel {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
 }
 
-.title {
+.tip-text {
+  font-size: 28rpx;
+  color: #636e72;
+  flex: 1;
+}
 
-  font-size: 24px;
-  font-weight: bold;
-  color: #333333;
+.selection-btn {
+  background: linear-gradient(135deg, #ff9a44, #ff6b6b);
+  color: white !important;
+  border-radius: 48rpx;
+  
+  font-size: 30rpx;
+  margin-left: 32rpx;
+}
+
+/* 资源状态模块 */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 48rpx;
+}
+
+.section-title {
+  font-size: 32rpx;
+  color: #2d3436;
+  font-weight: 600;
+  position: relative;
+  padding-left: 24rpx;
+}
+
+.section-title::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8rpx;
+  height: 36rpx;
+  background: #07C160;
+  border-radius: 4rpx;
 }
 
 .refresh-btn {
-  background-color: #07C160;
-  color: white;
-  font-size: 16px;
-  padding: 8px 20px;
-  border-radius: 4px;
-  border: none;
-  transition: all 0.3s ease;
+  background: #abcdef;
+  color: #4b6584;
+  border-radius: 40rpx;
+  padding: 12rpx 32rpx;
+  font-size: 26rpx;
 }
 
-.refresh-btn:active {
+/* 资源项样式 */
+.resource-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24rpx;
+}
+
+.resource-cell {
+  background: #f8f9fa;
+  border-radius: 12rpx;
+  padding: 24rpx;
+}
+
+.resource-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 24rpx;
+}
+
+.type-icon {
+  color: #07C160;
+  font-size: 36rpx;
+  margin-right: 16rpx;
+}
+
+.resource-type {
+  font-size: 28rpx;
+  color: #2d3436;
+  font-weight: 500;
+}
+
+/* 进度条组件 */
+.progress-container {
+  margin-top: 16rpx;
+}
+
+.progress-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 24rpx;
+  color: #636e72;
+  margin-bottom: 12rpx;
+}
+
+.progress-bar {
+  height: 16rpx;
+  background: #e9ecef;
+  border-radius: 8rpx;
+  overflow: hidden;
+}
+
+.progress-active {
+  height: 100%;
+  background: linear-gradient(90deg, #74b9ff, #0984e3);
+  border-radius: 8rpx;
+  transition: width 0.3s ease;
+}
+
+/* 交互状态 */
+.btn-hover {
+  opacity: 0.88;
   transform: scale(0.98);
 }
 
-.resource-list {
+
+
+/* 预约卡片样式 */
+.appointment-card {
+  position: relative;
+  background: #ffffff;
+  border-radius: 16rpx;
+  padding: 32rpx;
+  margin: 24rpx 0;
+  box-shadow: 0 8rpx 24rpx rgba(0,0,0,0.06);
+  overflow: hidden;
+}
+
+/* 状态徽章 */
+.status-badge {
+  position: absolute;
+  top: 16rpx;
+  right: -34rpx;
+  width: 120rpx;
+  height: 40rpx;
+  background: #4b6584;
+  color: white;
+  font-size: 22rpx;
+  text-align: center;
+  line-height: 40rpx;
+  transform: rotate(45deg);
+  box-shadow: -2rpx 2rpx 4rpx rgba(0,0,0,0.1);
+}
+
+.status-badge.active {
+  background: linear-gradient(135deg, #07C160, #16a085);
+}
+
+.status-badge.pending {
+  background: linear-gradient(135deg, #ff9f43, #ff9f43);
+}
+
+/* 主要信息区 */
+.primary-info {
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 32rpx;
+}
+
+.type-tag {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #2d3436;
+  margin-right: 16rpx;
+  position: relative;
+  padding-left: 16rpx;
+}
+
+.type-tag::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4rpx;
+  height: 24rpx;
+  background: #07C160;
+}
+
+.number-display {
+  font-size: 48rpx;
+  color: #0984e3;
+  font-family: DIN Alternate;
+  letter-spacing: 1rpx;
+}
+
+/* 时间信息组 */
+.time-group {
+  display: flex;
+  align-items: center;
+}
+
+.time-icon {
+  font-size: 40rpx;
+  margin-right: 16rpx;
+}
+
+.time-range {
   display: flex;
   flex-direction: column;
 }
 
-.resource-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 0;
-  border-bottom: 1px solid #f0f0f0;
+.time-label {
+  font-size: 24rpx;
+  color: #636e72;
+  margin-bottom: 4rpx;
 }
 
-.resource-type {
-
-  font-size: 18px;
-  color: #666666;
-  margin-right: 10px;
+.time-value {
+  font-size: 28rpx;
+  color: #2d3436;
+  font-weight: 500;
 }
 
-.resource-status {
-
-  font-size: 16px;
-  color: #333333;
-}
-
-
-.progress-container {
-  display: flex;
-  align-items: center;
-  margin-top: 5px;
-}
-
-.resource-status {
-  margin-left: 10px;
-  font-size: 14px;
-  color: #666;
+/* 装饰线 */
+.decorative-line {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 4rpx;
+  background: linear-gradient(90deg, #74b9ff 30%, #0984e3 70%);
 }

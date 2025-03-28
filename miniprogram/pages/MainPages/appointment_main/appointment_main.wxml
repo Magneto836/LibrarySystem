@@ -2,6 +2,7 @@
 <view class="guide-container">
   <view class="guide-text">使用指南</view>
   <view class="guide-detail">点击下方图片进行对应资源预约</view> 
+  <view class="guide-detail">每个用户各种资源只能预约一个</view> 
 </view>
 
 

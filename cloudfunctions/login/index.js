@@ -38,7 +38,8 @@ exports.main = async (event, context) => {
             _id: OPENID,
             nickname,
             avatarUrl,
-            createTime: serverDate,
+            root:'normal',
+           createTime: serverDate,
             updateTime: serverDate
           }
         });

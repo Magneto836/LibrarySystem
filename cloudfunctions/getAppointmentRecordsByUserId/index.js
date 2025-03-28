@@ -8,12 +8,12 @@ exports.main = async (event, context) => {
   const { userId } = event;
 
   try {
-    // 获取用户的所有预约记录
+    // 获取用户的所有预约记录，并按 startTime 降序排列
     const recordsSnapshot = await db.collection('appointments')
       .where({
         userId: userId
       })
-      .orderBy('startTime', 'desc')
+      .orderBy('startTime', 'desc') // 按开始时间降序排列
       .get();
 
     // 提前准备一个数组，用于存储不同类型的资源
@@ -30,7 +30,12 @@ exports.main = async (event, context) => {
       phoneBooths: []
     };
 
-    recordsSnapshot.data.forEach(record => {
+    // 按 startTime 降序排列
+    const sortedRecords = recordsSnapshot.data.sort((a, b) => {
+      return new Date(b.startTime) - new Date(a.startTime);
+    });
+
+    sortedRecords.forEach(record => {
       if (record.resourceType === 'seats') {
         resourceIdsByType.seats.push(record.resourceId);
       } else if (record.resourceType === 'discussion_areas') {
@@ -50,7 +55,7 @@ exports.main = async (event, context) => {
       seatsSnapshot.data.forEach(seat => {
         resources.seats.push({
           ...seat,
-          appointments: recordsSnapshot.data.filter(record => 
+          appointments: sortedRecords.filter(record => 
             record.resourceType === 'seats' && record.resourceId === seat._id
           )
         });
@@ -66,7 +71,7 @@ exports.main = async (event, context) => {
       discussionAreasSnapshot.data.forEach(area => {
         resources.discussionAreas.push({
           ...area,
-          appointments: recordsSnapshot.data.filter(record => 
+          appointments: sortedRecords.filter(record => 
             record.resourceType === 'discussion_areas' && record.resourceId === area._id
           )
         });
@@ -82,7 +87,7 @@ exports.main = async (event, context) => {
       phoneBoothsSnapshot.data.forEach(booth => {
         resources.phoneBooths.push({
           ...booth,
-          appointments: recordsSnapshot.data.filter(record => 
+          appointments: sortedRecords.filter(record => 
             record.resourceType === 'phone_booths' && record.resourceId === booth._id
           )
         });

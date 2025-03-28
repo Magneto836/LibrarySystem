@@ -1,4 +1,5 @@
 // cloudfunctions/get_resource_summary/index.js
+
 const cloud = require('wx-server-sdk');
 cloud.init();
 

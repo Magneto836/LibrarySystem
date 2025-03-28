@@ -22,10 +22,22 @@
   transition: all 0.3s ease;
 }
 
+.discussion-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .discussion-name {
   font-size: 34rpx;
   font-weight: 600;
   color: #2c3e50;
+}
+
+.discussion-status {
+  font-size: 24rpx;
+  color: #7f8c8d;
+  margin-top: 8rpx;
 }
 
 .arrow-icon {
@@ -54,25 +66,21 @@
   display: flex;
   flex-direction: column;
   gap: 20rpx;
-
-
   padding-bottom: 40rpx;
 }
 
 /* 讨论区按钮 */
 .discussion-btn {
   display: flex;
-
   justify-content: space-between;
   align-items: center;
   padding: 29rpx 30rpx;
-
   border-radius: 12rpx;
   transition: all 0.2s ease;
   background-color: #f8f9fa;
-  width: 94%; /* 确保按钮充满容器宽度 */
-  margin:0rpx; /* 水平居中 */
-  box-sizing: border-box; /* 包含内边距和边框在内 */
+  width: 94%;
+  margin: 0rpx;
+  box-sizing: border-box;
 }
 
 .discussion-btn.available {
@@ -89,7 +97,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-
 }
 
 .discussion-icon {
@@ -280,4 +287,44 @@ picker:hover {
   50% {
     opacity: 0.8;
   }
+}
+
+/* 加载提示框 */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+  padding: 40rpx;
+  border-radius: 20rpx;
+  box-shadow: 0 10rpx 20rpx rgba(0, 0, 0, 0.1);
+}
+
+.spinner {
+  width: 60rpx;
+  height: 60rpx;
+  border: 4rpx solid #f3f3f3;
+  border-top: 4rpx solid #3E7AF5;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20rpx;
+}
+
+.loading-text {
+  font-size: 28rpx;
+  color: #333;
 }

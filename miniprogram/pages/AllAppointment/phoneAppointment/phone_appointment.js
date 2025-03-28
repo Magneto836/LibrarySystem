@@ -11,6 +11,7 @@ Page({
     locations:[],
     dateIndex: 0,
     isSubmitting:false,
+    isLoading:true ,
   
   // 时间段配置（09:00-15:00 每半小时）
   timeSlots: [],
@@ -196,7 +197,7 @@ getDates() {
     // 创建 Date 对象
     const startDateTime = new Date(dateTimeStr);
     const endDateTime = new Date(startDateTime.getTime() + 30 * 60 * 1000);
-    const userId= getApp().globalData.userId || wx.getStorageSync('userId');
+    const userId= getApp().globalData.userInfo.openid || wx.getStorageSync('userInfo').openid;
     if (!userId) {
       wx.showToast({ title: '请先登录', icon: 'none' });
       return;
@@ -313,10 +314,17 @@ getDates() {
 
         if (existingLocation) {
           existingLocation.booths.push(booth);
+
+          existingLocation.usingCount = existingLocation.booths.filter(b => b.status === 'occupied').length;
+          existingLocation.freeCount = existingLocation.booths.filter(b => b.status === 'available').length;
+
+
         } else {
           acc.push({
             name: locationName,
-            booths: [booth]
+            booths: [booth],
+            usingCount: booth.status === 'occupied' ? 1 : 0,
+            freeCount: booth.status === 'available' ? 1 : 0
           });
         }
         return acc;
@@ -325,11 +333,13 @@ getDates() {
 
         this.setData({
           locations:groupedData,
-          isExpanded: newIsExpanded
+          isExpanded: newIsExpanded,
+          isLoading: false // 隐藏加载提示框
         });
 
     }} catch (error) {
       console.error('加载数据失败:', error);
+      this.setData({ isLoading: false }); // 隐藏加载提示框
     }
   },
   startAutoRefresh(){

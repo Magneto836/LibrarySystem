@@ -1,87 +1,56 @@
-<view class="container">
-  <view class="title">我的预约记录</view>
-
-  <!-- 座位预约记录 -->
-  <view class="card {{ifExpanded[0] ? 'expanded' : ''}}">
-    <view class="card-header {{ifExpanded[0] ? 'active' : ''}}" bindtap="toggleSection" data-section-index="0" style="height: 122rpx; display: flex; box-sizing: border-box">
-      <text class="card-title">座位预约记录</text>
-      <text class="toggle-icon">{{ ifExpanded[0] ? '▲' : '▼' }}</text>
+<view class="container" style="height: 1245rpx; display: block; box-sizing: border-box">
+  <!-- 用户信息区域 -->
+  <view class="user-info">
+    <view class="avatar-wrapper" bindtap="chooseAvatar">
+      <image class="avatar" src="{{userInfo.avatarUrl}}" mode="aspectFill"></image>
     </view>
-    <view class="card-content {{ifExpanded[0] ? 'expanded' : ''}}">
-      <scroll-view scroll-y style="height: {{ifExpanded[0] ? sectionHeights[0] + 'rpx' : '0'}};">
-      <view class="records-list" wx:for="{{allRecords}}" wx:key="index" wx:if="{{item.resourceDetails.type === 'seats'}}" style="--i:{{index}}" >
-        <view class="record-item">
-          <!-- 主要信息容器 -->
-        <view class="record-main">
-          <!-- 楼层和编号（标题） -->
-          <text class="record-title" style="position: relative; left: 0rpx; top: -24rpx">
-            楼层: {{item.resourceDetails.floor}} | 编号: {{item.resourceDetails.number}}
-          </text>
-          <!-- 使用时间 -->
-          <text class="record-time" style="position: relative; left: 0rpx; top: 0rpx">时间: {{item.startTime}} - {{item.endTime}}</text>
-        </view>
-         <!-- 状态标签（右上角） -->
-  <text class="record-status {{item.status}}">{{item.status}}</text>
-          <button class="cancel-btn" bindtap="cancelReservation" data-id="{{item._id}}" data-record="{{item}}" wx:if="{{item.status !== 'completed'}}" style="width: 172rpx; display: block; box-sizing: border-box; left: 499rpx; top: 174rpx; height: 43rpx">取消预约</button>
-        </view>
+    <view class="nickname-wrapper" bindtap="editNickname">
+      <text class="nickname">{{userInfo.nickname}}</text>
+    </view>
+  </view>
+
+  <!-- 提示文字 -->
+  <view class="hint-container" style="width: 335rpx; display: block; box-sizing: border-box">
+    <text class="hint-text" style="position: relative; left: 168rpx; top: NaNrpx">点击头像昵称修改个人信息</text>
+  </view>
+
+  <!-- 功能列表区域 -->
+  <view class="function-list">
+    <!-- 预约记录入口 -->
+    <view class="list-item" bindtap="goToAppointments">
+      <text class="list-title">我的预约</text>
+      <view class="arrow-right">
+        <text class="icon">›</text>
       </view>
-    </scroll-view>
     </view>
-  </view>
 
-  <!-- 讨论区预约记录 -->
-  <view class="card {{ifExpanded[1] ? 'expanded' : ''}}">
-    <view class="card-header {{ifExpanded[1] ? 'active' : ''}}" bindtap="toggleSection" data-section-index="1">
-      <text class="card-title">讨论区预约记录</text>
-      <text class="toggle-icon">{{ ifExpanded[1] ? '▲' : '▼' }}</text>
-    </view>
-    <view class="card-content {{ifExpanded[1] ? 'expanded' : ''}}">
-      <scroll-view scroll-y style="height: {{ifExpanded[1] ? sectionHeights[1] + 'rpx' : '0'}};" >
-      <view class="records-list" wx:for="{{allRecords}}" wx:key="index" wx:if="{{item.resourceDetails.type === 'discussion_areas'}}" style="--i:{{index}}">
-        <view class="record-item">
-          <view class="record-main">
-    <!-- 楼层和编号（标题） -->
-    <text class="record-title">
-      楼层: {{item.resourceDetails.floor}} | 编号: {{item.resourceDetails.number}}
-    </text>
-    <!-- 使用时间 -->
-    <text class="record-time">时间: {{item.startTime}} - {{item.endTime}}</text>
-  </view>
-
-  <!-- 状态标签（右上角） -->
-  <text class="record-status {{item.status}}">{{item.status}}</text>
-          <button class="cancel-btn" bindtap="cancelReservation" data-id="{{item._id}}" data-record="{{item}}" wx:if="{{item.status !== 'completed'}}">取消预约</button>
-        </view>
+    <!-- 管理员登录入口 -->
+    <view class="list-item admin-login" bindtap="showAdminLogin" wx:if="{{isAdmin}}">
+      <text class="list-title">管理员登录</text>
+      <view class="arrow-right">
+        <text class="icon">›</text>
       </view>
-    </scroll-view>
     </view>
   </view>
 
-  <!-- 电话亭预约记录 -->
-  <view class="card {{ifExpanded[2] ? 'expanded' : ''}}">
-    <view class="card-header {{ifExpanded[2] ? 'active' : ''}}" bindtap="toggleSection" data-section-index="2">
-      <text class="card-title">电话亭预约记录</text>
-      <text class="toggle-icon">{{ ifExpanded[2] ? '▲' : '▼' }}</text>
+<!-- 管理员登录弹窗 -->
+<view class="admin-login-modal" wx:if="{{showAdminInput}}">
+  <view class="modal-content">
+    <text class="modal-title">管理员登录</text>
+    <input 
+      class="modal-input" 
+      type="password" 
+      placeholder="请输入管理员密码" 
+      value="{{inputPassword}}" 
+      bindinput="onAdminPasswordInput"
+    />
+    <view class="modal-buttons">
+      <button class="cancel-btn" bindtap="cancelAdminLogin">取消</button>
+      <button class="confirm-btn" bindtap="handleAdminLogin">确定</button>
     </view>
-    <view class="card-content {{ifExpanded[2] ? 'expanded' : ''}}">
-      <scroll-view scroll-y style="height: {{ifExpanded[2] ? sectionHeights[2] + 'rpx' : '0'}};">
-      <view class="records-list" wx:for="{{allRecords}}" wx:key="index" wx:if="{{item.resourceDetails.type === 'phone_booths'}}"  style="--i:{{index}}">
-        <view class="record-item">
-          <view class="record-main">
-    <!-- 楼层和编号（标题） -->
-    <text class="record-title">
-      {{item.resourceDetails.location}} | 编号: {{item.resourceDetails.number}}
-    </text>
-    <!-- 使用时间 -->
-    <text class="record-time">时间: {{item.startTime}} - {{item.endTime}}</text>
   </view>
+</view>
 
-  <!-- 状态标签（右上角） -->
-  <text class="record-status {{item.status}}">{{item.status}}</text>
-          <button class="cancel-btn" bindtap="cancelReservation" data-id="{{item._id}}" data-record="{{item}}" wx:if="{{item.status !== 'completed'}}">取消预约</button>
-        </view>
-      </view>
-    </scroll-view>
-    </view>
-  </view>
+
+  
 </view>

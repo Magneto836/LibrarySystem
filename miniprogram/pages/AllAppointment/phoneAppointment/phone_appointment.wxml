@@ -1,4 +1,13 @@
 <view class="container">
+
+<!-- 加载提示框 -->
+<view wx:if="{{isLoading}}" class="loading-overlay">
+    <view class="loading-spinner">
+      <view class="spinner"></view>
+      <text class="loading-text">正在加载...</text>
+    </view>
+  </view>
+
   <!-- 地点卡片循环 -->
   <view class="location-card" wx:for="{{locations}}" wx:key="name">
     <!-- 卡片头部 -->
@@ -7,7 +16,12 @@
       bindtap="toggleCard" 
       data-index="{{index}}"
     >
-      <text class="location-name">{{item.name}}</text>
+    <view class="location-info">
+        <text class="location-name">{{item.name}}</text>
+        <text class="location-status">
+          使用中: {{item.usingCount}} | 空闲中: {{item.freeCount}}
+        </text>
+      </view>
       <image 
         class="arrow-icon" 
         src="/images/icons/arrow-down.png" 

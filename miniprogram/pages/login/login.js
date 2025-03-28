@@ -45,8 +45,20 @@ Page({
         }
       });
       const openid = result.result.openid;
-      wx.setStorageSync('userId', openid); // 存储到本地存储
-      getApp().globalData.userId = openid; // 存储到全局变量
+
+      // 将用户信息组合成对象
+      const userInfo = {
+        openid,
+        avatarUrl,
+        nickname
+      };
+
+      // 存储到本地存储（使用 JSON 字符串存储对象）
+      wx.setStorageSync('userInfo', userInfo); 
+
+      // 存储到全局变量（根据需要选择存储方式）
+      getApp().globalData.userInfo = userInfo; // 推荐存储完整对象
+
       wx.hideLoading();
       wx.reLaunch({ url: '/pages/MainPages/home/home' });
     } catch (error) {
