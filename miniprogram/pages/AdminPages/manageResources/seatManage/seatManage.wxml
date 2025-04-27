@@ -1,0 +1,120 @@
+<view class="container" style="height: 1424rpx; display: block; box-sizing: border-box; left: 0rpx; top: 0rpx">
+  <!-- 加载提示框 -->
+  <view wx:if="{{isLoading}}" class="loading-overlay">
+    <view class="loading-spinner">
+      <view class="spinner"></view>
+      <text class="loading-text">正在加载...</text>
+    </view>
+  </view>
+
+  <!-- 3D楼层导航 -->
+  <scroll-view scroll-x class="floor-nav">
+    <block wx:for="{{floors}}" wx:key="floor">
+      <view 
+        class="nav-item {{activeFloor === index ? 'active' : ''}}"
+        bindtap="switchFloor"
+        data-index="{{index}}"
+      >
+        {{item.floor}}楼
+      </view>
+    </block>
+  </scroll-view>
+
+  <!-- 区域折叠面板 -->
+  <view class="area-list">
+    <block wx:for="{{floors[activeFloor].areas}}" wx:key="areaName">
+      <view class="area-card">
+        <!-- 区域头部 -->
+        <view 
+          class="area-header {{areaExpanded[index] ? 'expanded' : ''}}"
+          bindtap="toggleArea"
+          data-area="{{index}}"
+        >
+          <text class="area-name">{{item.areaName}}区</text>
+          <view class="status-indicator">
+            
+            <image 
+              class="arrow-icon"
+              src="/images/icons/arrow-down.png"
+              mode="aspectFit"
+            ></image>
+          </view>
+        </view>
+
+        <!-- 座位滚动容器 -->
+        <scroll-view 
+          class="seat-scroll" 
+          scroll-y 
+          style="height: {{areaExpanded[index] ? '500rpx' : '0'}};"
+        >
+          <view class="seat-grid">
+            <block wx:for="{{item.seats}}" wx:key="seatId">
+              <view 
+                class="seat-item {{item.status === 'adminOccupied' ? 'admin-occupied' : 'available'}} {{selectedSeatId === item._id ? 'selected' : ''}}"
+                bindtap="selectSeat"
+                data-id="{{item._id}}"
+                data-status="{{item.status}}"
+              >
+                <view class="seat-background {{item.status === 'adminOccupied' ? 'admin-occupied-bg' :'available-bg'}}"></view>
+                <image 
+                  class="seat-icon"
+                  src="/images/icons/seat_available.png"
+                ></image>
+                <text class="seat-id">{{item.seatId}}</text>
+              </view>
+            </block>
+          </view>
+        </scroll-view>
+      </view>
+    </block>
+  </view>
+
+  <!-- 磨砂操作栏 -->
+  <view class="action-bar" wx:if="{{selectedSeatId}}">
+    <button class="action-btn toggle-status-btn" bindtap="toggleStatus">停用/启用</button>
+    <button class="action-btn delete-btn" bindtap="deleteSeat">删除</button>
+  </view>
+
+  <!-- 玻璃质感模态框 -->
+  <view wx:if="{{isActionModalVisible}}" class="modal-container">
+    <view class="modal-content">
+      <text class="modal-title">{{actionModalTitle}}</text>
+      <text class="modal-message">{{actionModalMessage}}</text>
+      <view class="modal-buttons">
+        <button class="confirm-btn" bindtap="confirmAction">确认</button>
+        <button class="cancel-btn" bindtap="cancelAction">取消</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 悬浮添加按钮 -->
+  <button class="add-seat-btn" bindtap="addSeat" style="font-size: 35rpx;">添加座位</button>
+
+  <!-- 添加座位模态框 -->
+  <view wx:if="{{isAddSeatModalVisible}}" class="modal-container">
+    <view class="modal-content">
+      <text class="modal-title">添加座位</text>
+      <view class="input-group">
+        <text class="input-label">楼层</text>
+        <input 
+          class="input-field" 
+          placeholder="例如：2" 
+          bindinput="onFloorInput"
+        />
+      </view>
+      <view class="input-group">
+        <text class="input-label">区域</text>
+        <input 
+          class="input-field" 
+          placeholder="例如：A" 
+          bindinput="onAreaInput"
+        />
+      </view>   
+     
+      <view class="modal-buttons">
+        <button class="confirm-btn" bindtap="confirmAddSeat">确认</button>
+        <button class="cancel-btn" bindtap="cancelAddSeat">取消</button>
+      </view>
+    </view>
+  </view>
+</view>

@@ -52,16 +52,16 @@ Page({
   },
   selectDate(e) {
     const index = e.detail.value;
-  const selectedDate = this.data.dateOptions[index];
-  const isToday = selectedDate === this.data.today;
+    const selectedDate = this.data.dateOptions[index];
+    const isToday = selectedDate === this.data.today;
 
-  this.setData({ 
-    selectedDate,
-    timeSlots: this.generateTimeSlots(
-      isToday ? new Date().toTimeString().substr(0,5) : null,
-      isToday
-    )
-  });
+    this.setData({ 
+      selectedDate,
+      timeSlots: this.generateTimeSlots(
+        isToday ? new Date().toTimeString().substr(0,5) : null,
+        isToday
+      )
+    });
   },
 
   selectTimeSlot(e) {
@@ -95,7 +95,6 @@ Page({
       const endTime = `${endHourStr}:00`;
 
       if (isToday) {
-        console.log("史今台南");
         const slotStartTotalMinutes = hour * 60;
         if (slotStartTotalMinutes >= currentTotalMinutes - 240) {
           slots.push(`${startTime}——${endTime}`);
@@ -125,7 +124,7 @@ Page({
     const startDateTime = new Date(dateTimeStr);
     const endDateTime = new Date(startDateTime.getTime() + 240 * 60 * 1000);
 
-    const userId= getApp().globalData.userInfo.openid || wx.getStorageSync('userInfo').openid;
+    const userId = getApp().globalData.userInfo.openid || wx.getStorageSync('userInfo').openid;
     if (!userId) {
       wx.showToast({ title: '请先登录', icon: 'none' });
       return;
@@ -136,30 +135,29 @@ Page({
         name: 'checkBookingConflict',
         data: {
           resourceId: currentDisAreaId,
-          resourceType:"discussion_areas",
-          userId:userId,
+          resourceType: "discussion_areas",
+          userId: userId,
           endTime: endDateTime.toISOString()
         }
       });
 
-       if (conflictCheck.result.status=== 0) {
+      if (conflictCheck.result.status === 0) {
         wx.showToast({ title: '您已预约过该资源', icon: 'none' });
         this.setData({ isSubmitting: false });
         return;
       }
-     if(conflictCheck.result.status=== 1){
-      wx.showToast({ title: '该资源已被预约，请选择其他资源', icon: 'none' });
-      this.setData({ isSubmitting: false });
-      return;
-     }
-
+      if (conflictCheck.result.status === 1) {
+        wx.showToast({ title: '该资源已被预约，请选择其他资源', icon: 'none' });
+        this.setData({ isSubmitting: false });
+        return;
+      }
 
       await wx.cloud.callFunction({
         name: 'createAppointment',
         data: {
           resourceType: 'discussion_areas',
           resourceId: currentDisAreaId,
-          userId:userId,
+          userId: userId,
           startTime: startDateTime.toISOString(),
           duration: 240
         }
@@ -199,14 +197,11 @@ Page({
     const cardIndex = e.currentTarget.dataset.index;
     const { cardsExpanded } = this.data;
 
-    // 创建一个新的数组来存储更新后的展开状态
     const newExpanded = [...cardsExpanded];
 
-    // 如果点击的卡片已经是展开状态，则收起它
     if (newExpanded[cardIndex]) {
       newExpanded[cardIndex] = false;
     } else {
-      // 如果点击的卡片是收起状态，则收起所有其他卡片并展开它
       newExpanded.fill(false);
       newExpanded[cardIndex] = true;
     }
@@ -218,9 +213,19 @@ Page({
 
   bookDiscussion(e) {
     const { id, status } = e.currentTarget.dataset;
+
+    if (status === 'adminOccupied') {
+      wx.showToast({
+        title: '该资源正在被管理员维修，请选择其他资源',
+        icon: 'none'
+      });
+      return;
+    }
+
     this.setData({
       isModalVisible: true,
-      currentDisAreaId: id
+      currentDisAreaId: id,
+      currentDisAreatStatus: status
     });
   },
 
@@ -233,20 +238,30 @@ Page({
 
       if (result.result && !result.result.error) {
         const { cards } = result.result;
+
+        // 按照楼层和topicId排序
         const processedCards = cards.map(card => {
-          const usingCount = card.discussionAreas.filter(discussion => discussion.status === 'occupied').length;
-          const freeCount = card.discussionAreas.filter(discussion => discussion.status === 'available').length;
+          // 先按楼层排序，同一楼层再按topicId排序
+          const sortedAreas = [...card.discussionAreas].sort((a, b) => {
+            if (a.floor !== b.floor) {
+              return a.floor - b.floor;
+            }
+            return a.topicId.localeCompare(b.topicId);
+          });
+
+          const usingCount = sortedAreas.filter(discussion => discussion.status !== 'available').length;
+          const freeCount = sortedAreas.filter(discussion => discussion.status === 'available').length;
 
           return {
             ...card,
+            discussionAreas: sortedAreas,
             usingCount,
             freeCount
           };
         });
 
-
         this.setData({
-          cards:processedCards,
+          cards: processedCards,
           cardsExpanded: Array(cards.length).fill(false) // 初始化所有卡片为收起状态
         });
       }

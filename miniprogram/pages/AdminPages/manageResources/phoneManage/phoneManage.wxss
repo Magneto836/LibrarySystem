@@ -1,0 +1,321 @@
+/* 基础样式重置 */
+page {
+  background-color: #f5f7fa;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+/* 主容器 */
+.container {
+  padding: 24rpx;
+  min-height: 100vh;
+  position: relative;
+}
+
+/* 添加按钮 */
+.add-btn {
+  position: fixed;
+  right: 32rpx;
+  bottom: 200rpx;
+  width: 88rpx;
+  height: 88rpx;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #7ed56f, #28b485);
+  color: white;
+  font-size: 48rpx;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 8rpx 24rpx rgba(126, 213, 111, 0.3);
+  border: none;
+  z-index: 99;
+  transition: all 0.2s ease;
+}
+
+.add-btn:active {
+  transform: scale(0.95);
+}
+
+/* 地点卡片 */
+.location-card {
+  background-color: #ffffff;
+  border-radius: 24rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+/* 卡片头部 */
+.card-header {
+  padding: 24rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background-color 0.3s ease;
+}
+
+.card-header.expanded {
+  background-color: #f8fafc;
+}
+
+.header-content {
+  flex: 1;
+}
+
+.location-name {
+  font-size: 34rpx;
+  font-weight: 600;
+  color: #2d3748;
+  display: block;
+  margin-bottom: 8rpx;
+}
+
+.status-info {
+  font-size: 26rpx;
+  color: #718096;
+}
+
+.arrow-icon {
+  width: 36rpx;
+  height: 36rpx;
+  transition: transform 0.3s ease;
+  margin-left: 20rpx;
+}
+
+.card-header.expanded .arrow-icon {
+  transform: rotate(180deg);
+}
+
+/* 卡片内容区域 */
+.card-content {
+  overflow: hidden;
+  transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.scroll-area {
+  height: 100%;
+}
+
+/* 电话亭网格 */
+.booth-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180rpx, 1fr));
+  gap: 20rpx;
+  padding: 24rpx;
+}
+
+.booth-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20rpx;
+  border-radius: 16rpx;
+  background-color: #ffffff;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+  border: 1rpx solid #e2e8f0; /* 添加边框 */
+}
+
+.booth-item::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 6rpx;
+}
+
+.booth-item.available::after {
+  background-color: #48bb78;
+}
+
+.booth-item.occupied::after {
+  background-color: #e53e3e;
+}
+
+/* 选中状态 */
+.booth-item.selected {
+  transform: translateY(-4rpx);
+  box-shadow: 0 8rpx 24rpx rgba(72, 187, 120, 0.2);
+}
+
+.booth-item.selected::after {
+  background-color: #3182ce; /* 选中后底部颜色变为蓝色 */
+}
+
+/* 停用状态 */
+.booth-item.occupied {
+  opacity: 0.7;
+  transform: translateY(6rpx);
+  background-color: #f8f9fa;
+}
+
+.booth-item.occupied::after {
+  background-color: #a0aec0;
+}
+
+.booth-icon {
+  width: 48rpx;
+  height: 48rpx;
+  margin-bottom: 12rpx;
+}
+
+.booth-number {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #2d3748;
+  margin-bottom: 4rpx;
+}
+
+.status-text {
+  font-size: 24rpx;
+  color: #718096;
+}
+
+/* 操作栏 */
+.action-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #ffffff;
+  padding: 20rpx 24rpx;
+  display: flex;
+  justify-content: center;
+  gap: 24rpx;
+  box-shadow: 0 -4rpx 16rpx rgba(0, 0, 0, 0.05);
+  z-index: 98;
+}
+
+.action-btn {
+  flex: 1;
+  height: 80rpx;
+  border-radius: 12rpx;
+  font-size: 30rpx;
+  font-weight: 500;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.toggle-btn {
+  background-color: #48bb78;
+  color: white;
+}
+
+.delete-btn {
+  background-color: #e53e3e;
+  color: white;
+}
+
+.action-btn:active {
+  opacity: 0.8;
+  transform: scale(0.98);
+}
+
+/* 模态框 */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+.modal-container {
+  width: 80%;
+  max-width: 600rpx;
+  animation: modalFadeIn 0.3s ease;
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: translateY(40rpx); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.modal-content {
+  background-color: #ffffff;
+  border-radius: 24rpx;
+  overflow: hidden;
+  box-shadow: 0 12rpx 48rpx rgba(0, 0, 0, 0.15);
+}
+
+.modal-title {
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #2d3748;
+  text-align: center;
+  padding: 32rpx 32rpx 16rpx;
+}
+
+.modal-message {
+  font-size: 28rpx;
+  color: #718096;
+  text-align: center;
+  padding: 0 32rpx 32rpx;
+  line-height: 1.6;
+}
+
+.modal-buttons {
+  display: flex;
+  border-top: 1rpx solid #edf2f7;
+}
+
+.confirm-btn, .cancel-btn {
+  flex: 1;
+  height: 96rpx;
+  font-size: 30rpx;
+  font-weight: 500;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  background-color: transparent;
+}
+
+.confirm-btn {
+  color: #48bb78;
+  border-right: 1rpx solid #edf2f7;
+}
+
+.cancel-btn {
+  color: #e53e3e;
+}
+
+/* 输入框组 */
+.input-group {
+  padding: 0 32rpx 24rpx;
+}
+
+.input-label {
+  font-size: 28rpx;
+  color: #4a5568;
+  margin-bottom: 12rpx;
+  display: block;
+}
+
+.input-field {
+  width: 100%;
+  height: 80rpx;
+  padding: 0 24rpx;
+  border: 1rpx solid #e2e8f0;
+  border-radius: 12rpx;
+  font-size: 28rpx;
+  background-color: #f8fafc;
+}
+
+.input-field:focus {
+  border-color: #48bb78;
+  background-color: #ffffff;
+}

@@ -173,3 +173,28 @@
 .cancel-btn:active, .confirm-btn:active {
   transform: scale(0.98);
 }
+/* 消息图标样式 */
+.message-icon {
+  position: fixed;
+  top: 30rpx;
+  right: 30rpx;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80rpx;
+  height: 80rpx;
+  background-color: white;
+  border-radius: 50%;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+
+.message-icon:hover {
+  transform: scale(1.1);
+}
+
+.message-icon .icon {
+  font-size: 40rpx;
+  color: #1aad19;
+}

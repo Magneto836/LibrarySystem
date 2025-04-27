@@ -101,7 +101,16 @@ Page({
     const _id = e.currentTarget.dataset._id;
     // 获取当前电话亭的状态
     const booth = this.data.locations.find(loc => loc.name === location)?.booths.find(b => b.boothId === boothId);
+    
 
+    // 如果电话亭状态为 adminOccupied，弹出提示
+    if (booth && booth.status === 'adminOccupied') {
+      wx.showToast({
+        title: '该资源正在被管理员维修，请选择其他资源',
+        icon: 'none'
+      });
+      return;
+    }
     // 显示日期和时间选择器
     this.setData({
       isModalVisible: true,
@@ -315,7 +324,7 @@ getDates() {
         if (existingLocation) {
           existingLocation.booths.push(booth);
 
-          existingLocation.usingCount = existingLocation.booths.filter(b => b.status === 'occupied').length;
+          existingLocation.usingCount = existingLocation.booths.filter(b => b.status != 'available').length;
           existingLocation.freeCount = existingLocation.booths.filter(b => b.status === 'available').length;
 
 
@@ -329,6 +338,10 @@ getDates() {
         }
         return acc;
       }, []);
+      groupedData.forEach(location => {
+        // 按 boothId 数值大小排序
+        location.booths.sort((a, b) => a.boothId - b.boothId);
+      });
       const newIsExpanded = Array(groupedData.length).fill(false);
 
         this.setData({

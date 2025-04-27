@@ -1,5 +1,7 @@
-<!-- pages/home/home.wxml -->
 <view class="page-container">
+  <!-- 加载提示框 -->
+  
+
   <!-- 顶部背景图 -->
   <image 
     src="/images/default_index_bg.jpg" 
@@ -11,55 +13,48 @@
   <view class="content-wrapper" style="position: relative; left: 0rpx; top: 400rpx; height: 881rpx; display: block; box-sizing: border-box">
     <!-- 未选择提示模块 -->
     <block wx:if="{{!recentAppointment}}">
-    <view class="selection-card" style="height: 230rpx; display: block; box-sizing: border-box; width: 704rpx">
-    
-      <view class="warning-text">您还没有选择需要的资源哦</view>
-      <view class="action-panel">
-        <text class="tip-text">请去挑选座位/讨论区/电话亭吧</text>
-        <button 
-          class="selection-btn" 
-          bindtap="onChooseBtnTap"
-          hover-class="btn-hover"
-         style="width: 239rpx; display: block; box-sizing: border-box; left: 0rpx; top: 0rpx">立即选择</button>
-      </view>
-
-    </view>
-  </block>
-      <block wx:else>
-  <view class="appointment-card">
-    <!-- 状态角标 -->
-    <view class="status-badge {{resourceStatus === 'active' ? 'active' :  'pending'}}">
-      {{resourceStatus}}
-    </view>
-
-    <!-- 主体信息 -->
-    <view class="info-container">
-      <!-- 类型与编号组合 -->
-      <view class="primary-info">
-        <text class="type-tag">{{resourceType}}</text>
-        <text class="number-display">#{{resourceNumber}}</text>
-      </view>
-
-      <!-- 时间信息 -->
-      <view class="time-group">
-        <view class="time-icon">🕒</view>
-        <view class="time-range">
-          <text class="time-label">预约时段</text>
-          <text class="time-value">{{formattedStartTime}} - {{formattedEndTime}}</text>
+      <view class="selection-card" style="height: 230rpx; display: block; box-sizing: border-box; width: 704rpx">
+        <view class="warning-text">您还没有选择需要的资源哦</view>
+        <view class="action-panel">
+          <text class="tip-text">请去挑选座位/讨论区/电话亭吧</text>
+          <button 
+            class="selection-btn" 
+            bindtap="onChooseBtnTap"
+            hover-class="btn-hover"
+            style="width: 239rpx; display: block; box-sizing: border-box; left: 0rpx; top: 0rpx">立即选择</button>
         </view>
       </view>
-    </view>
+    </block>
 
-    <!-- 装饰元素 -->
-    <view class="decorative-line"></view>
-  </view>
-</block>
+    <block wx:else>
+      <view class="appointment-card">
+        <!-- 状态角标 -->
+        <view class="status-badge {{resourceStatus === 'active' ? 'active' : 'pending'}}">
+          {{resourceStatus}}
+        </view>
 
+        <!-- 主体信息 -->
+        <view class="info-container">
+          <!-- 类型与编号组合 -->
+          <view class="primary-info">
+            <text class="type-tag">{{resourceType}}</text>
+            <text class="number-display">#{{resourceNumber}}</text>
+          </view>
 
+          <!-- 时间信息 -->
+          <view class="time-group">
+            <view class="time-icon">🕒</view>
+            <view class="time-range">
+              <text class="time-label">预约时段</text>
+              <text class="time-value">{{formattedStartTime}} - {{formattedEndTime}}</text>
+            </view>
+          </view>
+        </view>
 
-
-
-
+        <!-- 装饰元素 -->
+        <view class="decorative-line"></view>
+      </view>
+    </block>
 
     <!-- 资源状态模块 -->
     <view class="status-card" style="height: 549rpx; display: block; box-sizing: border-box; width: 704rpx">
@@ -69,7 +64,7 @@
           class="refresh-btn" 
           bindtap="refreshResourceStatus"
           hover-class="btn-hover"
-         style="width: 247rpx; display: block; box-sizing: border-box; left: 39rpx; top: 2rpx; height: 66rpx; position: relative">⟳ 刷新数据</button>
+          style="width: 247rpx; display: block; box-sizing: border-box; left: 39rpx; top: 2rpx; height: 66rpx; position: relative">⟳ 刷新数据</button>
       </view>
 
       <!-- 资源列表 -->
@@ -89,7 +84,7 @@
               <view class="progress-bar">
                 <view 
                   class="progress-active" 
-                  style="width: {{(item.occupied_count/item.totalCount)*100}}%"
+                  style="width: {{item.progressPercentage}}%"
                 ></view>
               </view>
             </view>

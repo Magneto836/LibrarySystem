@@ -1,4 +1,7 @@
-<view class="container" style="height: 1245rpx; display: block; box-sizing: border-box">
+<view class="container" style="height: 1210rpx; display: block; box-sizing: border-box">
+  <view class="message-icon" bindtap="goToMessages">
+    <text class="icon">✉️</text>
+  </view>
   <!-- 用户信息区域 -->
   <view class="user-info">
     <view class="avatar-wrapper" bindtap="chooseAvatar">

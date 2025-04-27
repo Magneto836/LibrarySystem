@@ -1,7 +1,8 @@
 const cloud = require('wx-server-sdk');
 cloud.init();
 const db = cloud.database();
-//    每天早上七点更新所有资源状态为 available
+const _ = db.command;
+
 // 主函数：更新资源状态
 exports.main = async (event, context) => {
     try {
@@ -15,8 +16,10 @@ exports.main = async (event, context) => {
         for (const item of collectionsToUpdate) {
             const { collectionName, field, value } = item;
 
-            // 更新集合中所有记录的指定字段
-            await db.collection(collectionName).where({}).update({
+            // 更新集合中状态为 available 或 occupied 的记录
+            await db.collection(collectionName).where({
+                status: _.in(['available', 'occupied'])
+            }).update({
                 data: {
                     [field]: value,
                     updatedAt: new Date() // 更新时间戳

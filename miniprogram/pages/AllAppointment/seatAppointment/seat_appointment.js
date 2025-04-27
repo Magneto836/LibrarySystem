@@ -240,6 +240,13 @@ Page({
 
   bookSeat(e) {
     const { seatid, status, id } = e.currentTarget.dataset;
+    if (status === 'adminOccupied') {
+      wx.showToast({
+        title: '该资源正在被管理员维修，请选择其他资源',
+        icon: 'none'
+      });
+      return;
+    }
     this.setData({
       isModalVisible: true,
       currentSeatId: id

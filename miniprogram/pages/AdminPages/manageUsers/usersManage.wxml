@@ -1,0 +1,113 @@
+<view class="container" style="height: 1414rpx; display: block; box-sizing: border-box">
+  <!-- 用户列表 -->
+  <view class="user-list">
+    <view wx:for="{{users}}" wx:key="id" class="user-card">
+      <view class="user-info">
+        <view class="user-avatar">
+          <image class="avatar" src="{{item.avatarUrl}}" mode="aspectFill" />
+        </view>
+        <view class="user-details">
+          <text class="nickname">{{item.nickname}}</text>
+          <text class="register-time">注册时间: {{item.formattedTime}}</text>
+          <text class="admin-status">{{item.isAdmin ? '管理员' : '普通用户'}}</text>
+        </view>
+      </view>
+      <view class="user-actions" style="height: 129rpx; display: grid; box-sizing: border-box">
+        <!-- 管理员按钮 -->
+        <button 
+          wx:if="{{item._id !== userInfo.openid}}"
+          class="action-btn {{item.isAdmin ? 'revoke-admin-btn' : 'make-admin-btn'}}" 
+          bindtap="toggleAdmin" 
+          data-id="{{item._id}}"
+          data-isadmin="{{item.isAdmin}}"
+         style="width: 258rpx; display: flex; box-sizing: border-box; left: -35rpx; top: -6rpx; position: relative; height: 74rpx">
+          {{item.isAdmin ? '取消管理员' : '设为管理员'}}
+        </button>
+        <view wx:else class="disabled-btn" style="width: 191rpx; display: flex; box-sizing: border-box; height: 72rpx">无法操作</view>
+
+        <!-- 封禁按钮 -->
+        <button 
+          wx:if="{{item._id !== userInfo.openid}}"
+          class="action-btn {{item.isBanned ? 'unban-btn' : 'ban-btn'}}" 
+          bindtap="toggleBan" 
+          data-id="{{item._id}}"
+          data-isbanned="{{item.isBanned}}"
+         style="width: 154rpx; display: flex; box-sizing: border-box; left: -143rpx; top: -5rpx; position: relative; height: 74rpx">
+          {{item.isBanned ? '解封' : '封禁'}}
+        </button>
+        <view wx:else class="disabled-btn" style="width: 191rpx; height: 72rpx; display: flex; box-sizing: border-box; left: -113rpx; top: 0rpx; position: relative">无法操作</view>
+        <button 
+        class="action-btn stats-btn" 
+        bindtap="showAppointmentStats" 
+        data-id="{{item._id}}"
+        style="position: relative; left: 374rpx; top: -91rpx; width: 210rpx; height: 74rpx; display: flex; box-sizing: border-box">
+        预约统计
+      </button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 管理员密码验证模态框 -->
+  <view wx:if="{{isPasswordModalVisible}}" class="modal-container">
+    <view class="modal-content">
+      <text class="modal-title">验证管理员密码</text>
+      <input 
+        class="password-input" 
+        type="password" 
+        placeholder="请输入管理员密码" 
+        bindinput="onPasswordInput"
+      />
+      <view class="modal-buttons">
+        <button class="confirm-btn" bindtap="confirmPassword">确认</button>
+        <button class="cancel-btn" bindtap="cancelPassword">取消</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 新管理员密码设置模态框 -->
+  <view wx:if="{{isNewPasswordModalVisible}}" class="modal-container">
+    <view class="modal-content">
+      <text class="modal-title">设置新管理员密码</text>
+      <input 
+        class="password-input" 
+        type="password" 
+        placeholder="请为新管理员设置密码" 
+        bindinput="onNewAdminPasswordInput"
+      />
+      <view class="modal-buttons">
+        <button class="confirm-btn" bindtap="executeAction" >确认</button>
+        <button class="cancel-btn" bindtap="cancelPassword">取消</button>
+      </view>
+    </view>
+  </view>
+<!-- 修改后的统计模态框 -->
+<view wx:if="{{isStatsModalVisible}}" class="modal-container">
+  <view class="modal-content stats-modal">
+    <text class="modal-title">{{currentUserNickname}} 的预约统计</text>
+
+    <!-- 按周统计表格 -->
+    <view class="stats-section">
+      <view class="stats-table">
+        <view class="table-row header">
+          <text class="date-range-col">日期范围</text>
+          <text class="type-col">电话亭</text>
+          <text class="type-col">座位</text>
+          <text class="type-col">讨论区</text>
+        </view>
+        <block wx:for="{{statsData.weeklyStats}}" wx:key="dateRange">
+          <view class="table-row">
+            <text class="date-range-col">{{item.dateRange}}</text>
+            <text class="type-col">{{item.phoneBooth}}次</text>
+            <text class="type-col">{{item.seat}}次</text>
+            <text class="type-col">{{item.discussionArea}}次</text>
+          </view>
+        </block>
+      </view>
+    </view>
+
+    <view class="modal-buttons">
+      <button class="close-btn" bindtap="cancelStats">关闭</button>
+    </view>
+  </view>
+</view>
+</view>

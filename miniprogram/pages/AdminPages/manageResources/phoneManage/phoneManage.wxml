@@ -1,0 +1,66 @@
+<view class="container" style="height: 1418rpx; display: block; box-sizing: border-box; left: 0rpx; top: 0rpx">
+  <!-- 添加按钮 -->
+  <button class="add-btn" bindtap="showAddModal">添加电话亭</button>
+
+  <!-- 地点卡片 -->
+  <view wx:for="{{locations}}" wx:key="name" class="location-card">
+    <view class="card-header {{expandedCards[index] ? 'expanded' : ''}}" 
+          bindtap="toggleCard" data-index="{{index}}">
+      <view class="header-content">
+        <text class="location-name">{{item.name}}</text>
+      </view>
+      <image class="arrow-icon" src="/images/icons/arrow-down.png" mode="aspectFit"/>
+    </view>
+
+    <view class="card-content" style="height:{{expandedCards[index] ? ((item.booths.length / 3 +1) * 120 + 40) + 'rpx' : '0'}}">
+      <scroll-view scroll-y class="scroll-area">
+        <view class="booth-grid">
+          <view wx:for="{{item.booths}}" wx:key="_id" 
+                class="booth-item {{selectedBoothId === item._id ? 'selected' : ''}} {{item.status === 'adminOccupied' ? 'occupied' : 'available'}}"
+                bindtap="selectBooth" data-id="{{item._id}}" data-status="{{item.status}}">
+            <image class="booth-icon" src="/images/icons/phone_booth.png" mode="aspectFit"/>
+            <text class="booth-number">{{item.boothId}}号</text>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+
+  <!-- 操作栏 -->
+  <view wx:if="{{selectedBoothId}}" class="action-bar">
+    <button class="action-btn toggle-btn" bindtap="toggleBoothStatus">停用/启用</button>
+    <button class="action-btn delete-btn" bindtap="deleteBooth">删除</button>
+  </view>
+
+  <!-- 操作确认模态框 -->
+  <view wx:if="{{isActionModalVisible}}" class="modal-backdrop">
+    <view class="modal-container">
+      <view class="modal-content">
+        <text class="modal-title">{{actionModalTitle}}</text>
+        <text class="modal-message">{{actionModalMessage}}</text>
+        <view class="modal-buttons">
+          <button class="confirm-btn" bindtap="confirmAction">确认</button>
+          <button class="cancel-btn" bindtap="cancelAction">取消</button>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 添加电话亭模态框 -->
+  <view wx:if="{{isAddModalVisible}}" class="modal-backdrop">
+    <view class="modal-container">
+      <view class="modal-content">
+        <text class="modal-title">添加新电话亭</text>
+        <view class="input-group">
+          <text class="input-label">所属区域</text>
+          <input class="input-field" placeholder="例如: 东区大堂" 
+                 data-field="location" bindinput="handleInput"/>
+        </view>
+        <view class="modal-buttons">
+          <button class="confirm-btn" bindtap="confirmAdd">确认</button>
+          <button class="cancel-btn" bindtap="cancelAdd">取消</button>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

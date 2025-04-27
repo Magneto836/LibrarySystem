@@ -1,0 +1,32 @@
+<view class="container" style="height: 1412rpx; display: block; box-sizing: border-box">
+  <!-- 页面标题 -->
+  <view class="header">
+    <text class="title">管理控制台</text>
+  </view>
+
+  <!-- 功能卡片 -->
+  <view class="dashboard-grid">
+    <view class="dashboard-card" bindtap="navigateToDiscussion">
+      <image class="card-icon discussion-icon" src="/images/icons/discussion_area.png"></image>
+      <text class="card-title">讨论区管理</text>
+    </view>
+    <view class="dashboard-card" bindtap="navigateToSeats">
+      <image class="card-icon seat-icon" src="/images/icons/seat_available.png"></image>
+      <text class="card-title">座位管理</text>
+    </view>
+    <view class="dashboard-card" bindtap="navigateToPhoneBooths">
+      <image class="card-icon phone-icon" src="/images/icons/phone_booth.png"></image>
+      <text class="card-title">电话亭管理</text>
+    </view>
+    <view class="dashboard-card" bindtap="navigateToUsers">
+      <image class="card-icon user-icon" src="/images/icons/user.png"></image>
+      <text class="card-title">用户信息管理</text>
+    </view>
+  </view>
+
+  <!-- 欢迎信息 -->
+  <view class="welcome-section">
+    <text class="welcome-text">欢迎，{{adminName}}</text>
+    <text class="welcome-subtext">今天是 {{currentDate}}，祝您工作愉快！</text>
+  </view>
+</view>

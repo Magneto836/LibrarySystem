@@ -1,0 +1,20 @@
+<view class="container" style="height: 1425rpx; display: block; box-sizing: border-box">
+  <!-- 消息列表 -->
+  <view class="message-list">
+    <block wx:for="{{messages}}" wx:key="id">
+      <view class="message-item" bindtap="markAsRead" data-id="{{item._id}}">
+        <view class="message-header">
+          <text class="message-title">{{item.title}}</text>
+          <text class="message-time">{{item.formattedCreateTime}}</text>
+        </view>
+        <text class="message-content">{{item.content}}</text>
+        <view class="unread-dot" wx:if="{{!item.isRead}}"></view>
+      </view>
+    </block>
+  </view>
+
+  <!-- 无消息提示 -->
+  <view class="no-messages" wx:if="{{messages.length === 0}}">
+    <text>暂无消息</text>
+  </view>
+</view>

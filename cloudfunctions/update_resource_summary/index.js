@@ -17,7 +17,7 @@ exports.main = async (event, context) => {
     summaryData.seat = {
       resource_type: 'seat',
       total_count: allSeatResult.total,
-      occupied_count: await getOccupiedCount('all_seat', { status: 'occupied' })
+      occupied_count: await getOccupiedCount('all_seat', { status: db.command.in(['occupied', 'adminOccupied']) })
     };
 
     // 查询 phone_booth 表的数据
@@ -25,7 +25,7 @@ exports.main = async (event, context) => {
     summaryData.phone_booth = {
       resource_type: 'phone_booth',
       total_count: phoneBoothResult.total,
-      occupied_count: await getOccupiedCount('phone_booths', { status: 'occupied' })
+      occupied_count: await getOccupiedCount('phone_booths', { status: db.command.in(['occupied', 'adminOccupied']) })
     };
 
     // 查询 discussion_area 表的数据
@@ -33,7 +33,7 @@ exports.main = async (event, context) => {
     summaryData.discussion_area = {
       resource_type: 'discussion_area',
       total_count: discussionAreaResult.total,
-      occupied_count: await getOccupiedCount('discussion_areas', { status: 'occupied' })
+      occupied_count: await getOccupiedCount('discussion_areas', { status: db.command.in(['occupied', 'adminOccupied']) })
     };
 
     // 将汇总数据写入 resource_summary 表

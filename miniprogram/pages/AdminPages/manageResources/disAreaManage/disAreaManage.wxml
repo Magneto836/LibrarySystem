@@ -1,0 +1,115 @@
+<view class="container">
+  <!-- 添加资源按钮 -->
+  <button class="add-resource-btn" bindtap="addResource">添加资源</button>
+
+  <!-- 讨论区卡片循环 -->
+  <view class="discussion-cards">
+    <view 
+      class="discussion-card" 
+      wx:for="{{filteredCards}}" 
+      wx:key="cardName"
+    >
+      <!-- 卡片头部 -->
+      <view 
+        class="card-header {{expandedCards[index] ? 'expanded' : ''}}" 
+        bindtap="toggleCard" 
+        data-index="{{index}}"
+      >
+        <view class="discussion-info">
+          <text class="discussion-name">{{item.cardName}}区</text>
+        </view>
+        <image 
+          class="arrow-icon" 
+          src="/images/icons/arrow-down.png" 
+          mode="aspectFit"
+        ></image>
+      </view>
+
+      <!-- 可折叠内容区域 -->
+      <view 
+        class="card-content" 
+        style="height: {{expandedCards[index] ? (item.discussionAreas.length+1)/2 *140 + 'rpx' : '0'}};"
+      >
+        <scroll-view 
+          scroll-y 
+          class="scroll-area" 
+          style="height: 100%;"
+        >
+          <view class="discussion-grid">
+            <!-- 讨论区按钮 -->
+            <view 
+              class="discussion-btn {{discussion.status === 'available' ? 'available' : discussion.status === 'adminOccupied' ? 'admin-occupied' : 'occupied'}} {{selectedDiscussionId === discussion._id ? 'selected' : ''}}" 
+              wx:for="{{item.discussionAreas}}" 
+              wx:for-item="discussion"
+              wx:key="topicId"
+              bindtap="selectDiscussion" 
+              data-id="{{discussion._id}}"
+              data-status="{{discussion.status}}"
+            >
+              <view class="discussion-info-left">
+                <image class="discussion-icon" src="/images/icons/discussion_area.png"></image>
+                <text class="discussion-number">{{discussion.floor}}-{{discussion.topicId}}</text>
+              </view>
+              <view class="discussion-info-right">
+                <text class="discussion-capacity">容量: {{discussion.capacity}}</text>
+              </view>
+            </view>
+          </view>
+        </scroll-view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 操作栏 -->
+  <view class="action-bar" wx:if="{{selectedDiscussionId}}">
+    <button class="action-btn toggle-status-btn" bindtap="toggleStatus">停用/启用</button>
+    <button class="action-btn delete-btn" bindtap="deleteDiscussionArea">删除</button>
+  </view>
+
+  <!-- 操作确认模态框 -->
+  <view wx:if="{{isActionModalVisible}}" class="modal-container">
+    <view class="modal-content">
+      <text class="modal-title">{{actionModalTitle}}</text>
+      <text class="modal-message">{{actionModalMessage}}</text>
+      <view class="modal-buttons">
+        <button class="confirm-btn" bindtap="confirmAction">确认</button>
+        <button class="cancel-btn" bindtap="cancelAction">取消</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 添加资源模态框 -->
+  <view wx:if="{{isAddResourceModalVisible}}" class="modal-container">
+    <view class="modal-content">
+      <text class="modal-title">添加讨论区</text>
+      <view class="input-group">
+        <text class="input-label">楼层（直接输入楼层号即可）</text>
+        <input 
+          class="input-field" 
+          placeholder="例如：2" 
+          bindinput="onFloorInput"
+        />
+      </view>
+      <view class="input-group">
+        <text class="input-label">区域（直接输入对应区域大写字母号即可）</text>
+        <input 
+          class="input-field" 
+          placeholder="例如：A" 
+          bindinput="onAreaInput"
+        />
+      </view>
+      <view class="input-group">
+        <text class="input-label">容量（直接输入容量即可）</text>
+        <input 
+          class="input-field" 
+          placeholder="例如：3" 
+          bindinput="onCapInput"
+        />
+      </view>
+      <view class="modal-buttons">
+        <button class="confirm-btn" bindtap="confirmAddResource">确认</button>
+        <button class="cancel-btn" bindtap="cancelAddResource">取消</button>
+      </view>
+    </view>
+  </view>
+</view>

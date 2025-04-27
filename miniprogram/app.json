@@ -8,8 +8,13 @@
     "pages/AllAppointment/phoneAppointment/phone_appointment",
     "pages/AllAppointment/seatAppointment/seat_appointment",
     "pages/AllAppointment/disArea_appointment/disArea_appointment",
-    "pages/myAppointment/myAppointment"
-
+    "pages/myAppointment/myAppointment",
+    "pages/AdminPages/adminMainPage/adminMainPage",
+    "pages/AdminPages/manageUsers/usersManage",
+    "pages/AdminPages/manageResources/phoneManage/phoneManage",
+    "pages/AdminPages/manageResources/seatManage/seatManage",
+    "pages/AdminPages/manageResources/disAreaManage/disAreaManage",
+    "pages/MainPages/mine/message"
   ],
   "window": {
     "backgroundColor": "#F6F6F6",

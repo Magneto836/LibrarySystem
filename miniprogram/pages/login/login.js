@@ -44,6 +44,17 @@ Page({
           nickname
         }
       });
+     
+      // 检查用户是否被封禁
+      if (result.result && result.result.isBanned) {
+        wx.hideLoading();
+        wx.showToast({
+          title: '该用户已被封禁，无法登录，请联系管理员进行解封',
+          icon: 'none'
+        });
+        return;
+      }
+
       const openid = result.result.openid;
 
       // 将用户信息组合成对象

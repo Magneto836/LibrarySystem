@@ -9,7 +9,7 @@ exports.main = async (event, context) => {
     const userSnapshot = await db.collection('users').doc(userId).get();
     const user = userSnapshot.data;
     
-    if (user.role === 'root') {
+    if (user.isAdmin) {
       return {
         isAdmin: true,
         password: user.password,

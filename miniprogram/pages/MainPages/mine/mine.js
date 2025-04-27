@@ -11,8 +11,10 @@ Page({
 
   onLoad() {
     // 初始化用户信息
+    const app = getApp();
     this.setData({
-      userInfo: wx.getStorageSync('userInfo') || {}
+      userInfo: wx.getStorageSync('userInfo') || {},
+      isAdmin: app.globalData.isAdmin
     });
     
     // 验证用户角色
@@ -30,8 +32,9 @@ Page({
       });
       
       if (result.result && result.result.isAdmin) {
+        wx.setStorageSync('adminPassword', result.result.password);
         this.setData({
-          isAdmin: true,
+
           truePassword:result.result.password
         });
       }
@@ -54,6 +57,10 @@ Page({
 handleAdminLogin() {
      if(this.data.isAdmin && this.data.truePassword == this.data.inputPassword ){
        console.log("成功");
+       // 跳转  
+       wx.navigateTo({
+        url: '/pages/AdminPages/adminMainPage/adminMainPage',
+      });
      }
      else {
       wx.showToast({ title: '密码错误或您不是管理员', icon: 'none' });
@@ -124,5 +131,10 @@ handleAdminLogin() {
   },
   cancelAdminLogin() {
     this.setData({ showAdminInput: false });
-  }
+  },
+  goToMessages() {
+    wx.navigateTo({
+      url: '/pages/MainPages/mine/message', // 消息页面的路径
+    });
+  },
 });

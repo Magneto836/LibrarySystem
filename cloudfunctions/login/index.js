@@ -7,7 +7,7 @@ exports.main = async (event, context) => {
 
   // 验证参数是否齐全
   if (!avatarUrl || !nickname) {
-    throw new Error('缺少必要参数');
+    return { error: '缺少必要参数' };
   }
 
   const db = cloud.database();
@@ -19,8 +19,10 @@ exports.main = async (event, context) => {
       .where({ _id: OPENID })
       .get();
 
+    let user = null;
     if (queryResult.data.length > 0) {
       // 用户存在，更新信息
+      user = queryResult.data[0];
       await db.collection('users')
         .doc(OPENID)
         .update({
@@ -38,25 +40,22 @@ exports.main = async (event, context) => {
             _id: OPENID,
             nickname,
             avatarUrl,
-            root:'normal',
-           createTime: serverDate,
-            updateTime: serverDate
+            root: 'normal',
+            createTime: serverDate,
+            updateTime: serverDate,
+            isBanned: false // 默认未封禁
           }
         });
+      user = { isBanned: false };
     }
+    console.log("isBannde",user.isBanned);
+    // 返回用户信息，包括是否被封禁
+    return {
+      openid: OPENID,
+      isBanned: user.isBanned
+    };
   } catch (error) {
-    // 区分错误类型：用户不存在的错误 vs 其他错误
-    if (error.message.includes('document.get:fail document does not exist')) {
-      // 此处不会触发，因为已改用 where 查询
-      console.log('用户不存在，已自动处理');
-    } else {
-      // 其他未知错误抛出
-      console.error('云函数执行失败:', error);
-      throw error;
-    }
+    console.error('云函数执行失败:', error);
+    return { error: '登录失败，请重试' };
   }
-
-  return {
-    openid: OPENID // 保持原有返回结构
-  };
 };
